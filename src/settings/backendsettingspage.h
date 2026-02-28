@@ -44,6 +44,8 @@ class BackendSettingsPage : public SettingsPage {
   void Load() override;
   void Save() override;
 
+  static QString GroupingBeforeQueueToolTip();
+
 #ifdef HAVE_ALSA
   enum class ALSAPluginType {
     HW = 1,

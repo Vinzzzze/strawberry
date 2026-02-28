@@ -69,6 +69,7 @@ PlaylistManager::PlaylistManager(const SharedPtr<TaskManager> task_manager,
                                  const SharedPtr<PlaylistBackend> playlist_backend,
                                  const SharedPtr<CollectionBackend> collection_backend,
                                  const SharedPtr<CurrentAlbumCoverLoader> current_albumcover_loader,
+                                 const int grouped_before_queue,
                                  QObject *parent)
     : PlaylistManagerInterface(parent),
       task_manager_(task_manager),
@@ -82,7 +83,8 @@ PlaylistManager::PlaylistManager(const SharedPtr<TaskManager> task_manager,
       playlist_container_(nullptr),
       current_(-1),
       active_(-1),
-      playlists_loading_(0) {
+      playlists_loading_(0),
+      grouped_before_queue_(grouped_before_queue) {
 
   setObjectName(QLatin1String(QObject::metaObject()->className()));
 
@@ -93,6 +95,15 @@ PlaylistManager::~PlaylistManager() {
   const QList<Data> datas = playlists_.values();
   for (const Data &data : datas) delete data.p;
 
+}
+
+void PlaylistManager::update_grouped_before_queue(const int grouped_before_queue) {
+  grouped_before_queue_ = grouped_before_queue;
+
+  QList<Data> datas = playlists_.values();
+  for (Data &data : datas) {
+    data.p->update_grouped_before_queue(grouped_before_queue);
+  }
 }
 
 void PlaylistManager::Init(PlaylistSequence *sequence, PlaylistContainer *playlist_container) {
@@ -155,7 +166,15 @@ QItemSelection PlaylistManager::selection(const int id) const {
 
 Playlist *PlaylistManager::AddPlaylist(const int id, const QString &name, const QString &special_type, const QString &ui_path, const bool favorite) {
 
-  Playlist *ret = new Playlist(task_manager_, url_handlers_, playlist_backend_, collection_backend_, tagreader_client_, id, special_type, favorite);
+  Playlist *ret = new Playlist(task_manager_,
+                               url_handlers_,
+                               playlist_backend_,
+                               collection_backend_,
+                               tagreader_client_,
+                               id,
+                               special_type,
+                               favorite,
+                               grouped_before_queue_);
   ret->set_sequence(sequence_);
   ret->set_ui_path(ui_path);
 

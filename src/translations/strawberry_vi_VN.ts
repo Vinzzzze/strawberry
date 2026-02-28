@@ -664,6 +664,14 @@
       <translation>Cấp độ mục tiêu</translation>
     </message>
     <message>
+      <source>Grouping Play</source>
+      <translation type="unfinished">Grouping Play</translation>
+    </message>
+    <message>
+      <source>Number of grouped track played before play queued track</source>
+      <translation type="unfinished">Number of grouped track played before play queued track</translation>
+    </message>
+    <message>
       <source>Fading</source>
       <translation>Giảm dần</translation>
     </message>
@@ -5274,6 +5282,26 @@ Bạn có chắc chắn muốn tiếp tục không?</translation>
     <message>
       <source>Can&apos;t add directory %1 with special filesystem %2 to collection</source>
       <translation>Không thể thêm thư mục %1 với hệ thống tập tin đặc biệt %2 vào bộ sưu tập</translation>
+    </message>
+    <message>
+      <source>This field is used to tell how many tracks of the same group will be played before the queued track will be played.</source>
+      <translation type="unfinished"></translation>
+    </message>
+    <message>
+      <source> is used to say that the queued track will wait for the end of the current track group before being played.</source>
+      <translation type="unfinished"></translation>
+    </message>
+    <message>
+      <source> is used to say that the queued track will be played after the end of the current track, whatever it belongs to a group or not.</source>
+      <translation type="unfinished"></translation>
+    </message>
+    <message>
+      <source>Any other value to give the number of grouped tracks played before playing the queued one(s). </source>
+      <translation type="unfinished"></translation>
+    </message>
+    <message>
+      <source>Obviously, if there are less grouped tracks to play than the given number, the queued tracks will be played as soon as the last grouped track is played.</source>
+      <translation type="unfinished"></translation>
     </message>
   </context>
   <context>
