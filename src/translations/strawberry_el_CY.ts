@@ -668,6 +668,14 @@
       <translation type="unfinished">Target Level</translation>
     </message>
     <message>
+      <source>Grouping Play</source>
+      <translation type="unfinished">Grouping Play</translation>
+    </message>
+    <message>
+      <source>Number of grouped track played before play queued track</source>
+      <translation type="unfinished">Number of grouped track played before play queued track</translation>
+    </message>
+    <message>
       <source>Fading</source>
       <translation>Εξασθένιση</translation>
     </message>
@@ -5290,6 +5298,26 @@ Are you sure you want to continue?</translation>
     <message>
       <source>Can&apos;t add directory %1 with special filesystem %2 to collection</source>
       <translation type="unfinished">Can&apos;t add directory %1 with special filesystem %2 to collection</translation>
+    </message>
+    <message>
+      <source>This field is used to tell how many tracks of the same group will be played before the queued track will be played.</source>
+      <translation type="unfinished"></translation>
+    </message>
+    <message>
+      <source> is used to say that the queued track will wait for the end of the current track group before being played.</source>
+      <translation type="unfinished"></translation>
+    </message>
+    <message>
+      <source> is used to say that the queued track will be played after the end of the current track, whatever it belongs to a group or not.</source>
+      <translation type="unfinished"></translation>
+    </message>
+    <message>
+      <source>Any other value to give the number of grouped tracks played before playing the queued one(s). </source>
+      <translation type="unfinished"></translation>
+    </message>
+    <message>
+      <source>Obviously, if there are less grouped tracks to play than the given number, the queued tracks will be played as soon as the last grouped track is played.</source>
+      <translation type="unfinished"></translation>
     </message>
   </context>
   <context>

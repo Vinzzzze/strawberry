@@ -92,6 +92,8 @@ BackendSettingsPage::BackendSettingsPage(SettingsDialog *dialog, const SharedPtr
 
   ui_->label_ebur128_target_level->setMinimumWidth(QFontMetrics(ui_->label_ebur128_target_level->font()).horizontalAdvance(u"-WW.W LUFS"_s));
 
+  ui_->spinbox_grouping_before_queue->setToolTip(GroupingBeforeQueueToolTip());
+
   QObject::connect(ui_->combobox_output, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &BackendSettingsPage::OutputChanged);
   QObject::connect(ui_->combobox_device, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &BackendSettingsPage::DeviceSelectionChanged);
   QObject::connect(ui_->lineedit_device, &QLineEdit::textChanged, this, &BackendSettingsPage::DeviceStringChanged);
@@ -120,6 +122,27 @@ BackendSettingsPage::BackendSettingsPage(SettingsDialog *dialog, const SharedPtr
 BackendSettingsPage::~BackendSettingsPage() {
 
   delete ui_;
+
+}
+
+QString BackendSettingsPage::GroupingBeforeQueueToolTip() {
+
+  return "<html><head/><body><p>"_L1 +
+         QObject::tr("This field is used to tell how many tracks of the same group will be played before the queued track will be played.") +
+         u' ' +
+         "</p><p>"_L1 +
+
+         "<span style=\"font-weight:600;\">0:</span> "_L1 +
+         QObject::tr(" is used to say that the queued track will wait for the end of the current track group before being played.") +
+         "</p><p>"_L1 +
+
+         "<span style=\"font-weight:600;\">1:</span> "_L1 +
+         QObject::tr(" is used to say that the queued track will be played after the end of the current track, whatever it belongs to a group or not.") +
+         "</p><p>"_L1 +
+
+         QObject::tr("Any other value to give the number of grouped tracks played before playing the queued one(s). ") +
+         QObject::tr("Obviously, if there are less grouped tracks to play than the given number, the queued tracks will be played as soon as the last grouped track is played.") +
+         "</p></body></html>"_L1;
 
 }
 
@@ -175,6 +198,8 @@ void BackendSettingsPage::Load() {
   ui_->checkbox_channels->setChecked(s.value(kChannelsEnabled, false).toBool());
   ui_->spinbox_channels->setValue(s.value(kChannels, 2).toInt());
   ui_->widget_channels->setEnabled(ui_->checkbox_channels->isChecked());
+
+  ui_->spinbox_grouping_before_queue->setValue(s.value(kGroupingBeforeQueue, 1).toInt());
 
   ui_->checkbox_bs2b->setChecked(s.value(kBS2B, false).toBool());
 
@@ -439,6 +464,8 @@ void BackendSettingsPage::Save() {
 
   s.setValue(kChannelsEnabled, ui_->checkbox_channels->isChecked());
   s.setValue(kChannels, ui_->spinbox_channels->value());
+
+  s.setValue(kGroupingBeforeQueue, ui_->spinbox_grouping_before_queue->value());
 
   s.setValue(kBS2B, ui_->checkbox_bs2b->isChecked());
 
