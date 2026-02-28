@@ -38,6 +38,7 @@ constexpr char kExclusiveMode[] = "exclusive_mode";
 constexpr char kVolumeControl[] = "volume_control";
 constexpr char kChannelsEnabled[] = "channels_enabled";
 constexpr char kChannels[] = "channels";
+constexpr char kGroupingBeforeQueue[] = "grouping_queue";
 constexpr char kBS2B[] = "bs2b";
 constexpr char kHTTP2[] = "http2";
 constexpr char kStrictSSL[] = "strict_ssl";
