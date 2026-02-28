@@ -668,6 +668,14 @@
       <translation>Niveau ciblé</translation>
     </message>
     <message>
+      <source>Grouping Play</source>
+      <translation type="unfinished">Pistes groupées</translation>
+    </message>
+    <message>
+      <source>Number of grouped track played before play queued track</source>
+      <translation type="unfinished">Nombre de pistes groupées jouées avant de jouer les pistes en attente</translation>
+    </message>
+    <message>
       <source>Fading</source>
       <translation>Fondu</translation>
     </message>
@@ -5290,6 +5298,26 @@ Are you sure you want to continue?</source>
     <message>
       <source>Can&apos;t add directory %1 with special filesystem %2 to collection</source>
       <translation>Impossible d&apos;ajouter un répertoire %1 avec le système de fichiers spécial %2 à la bibliothèque</translation>
+    </message>
+    <message>
+      <source>This field is used to tell how many tracks of the same group will be played before the queued track will be played.</source>
+      <translation type="unfinished">Ce champ est utilisé pour donner le nombre de pistes groupées à lire avant de passer sur les pistes de la file d&apos;attente.</translation>
+    </message>
+    <message>
+      <source> is used to say that the queued track will wait for the end of the current track group before being played.</source>
+      <translation type="unfinished">est utilisé lorsqu'on veut terminer la lecture des pistes regroupées avant de lire les pistes de la file d&apos;attente.</translation>
+    </message>
+    <message>
+      <source> is used to say that the queued track will be played after the end of the current track, whatever it belongs to a group or not.</source>
+      <translation type="unfinished">est utilisé pour retrouver le mode par défaut : quelque soit la valeur du tag de groupement de la piste en cours, on passe aux pistes de la file d&apos;attente à la fin de la lecture de cette piste.</translation>
+    </message>
+    <message>
+      <source>Any other value to give the number of grouped tracks played before playing the queued one(s). </source>
+      <translation type="unfinished">Toute autre valeur représente le nombre de pistes de même groupement jouées avant de passer aux pistes de la file d&apos;attente.</translation>
+    </message>
+    <message>
+      <source>Obviously, if there are less grouped tracks to play than the given number, the queued tracks will be played as soon as the last grouped track is played.</source>
+      <translation type="unfinished">Bien-sûr, s'il reste à lire moins de pistes groupées que le nombre saisi, les pistes de la file d'attente seront jouées dès la fin de la dernière piste du regroupement.</translation>
     </message>
   </context>
   <context>
