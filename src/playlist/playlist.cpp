@@ -682,9 +682,12 @@ int Playlist::next_row(const bool ignore_repeat_track) {
 
 int Playlist::previous_row(const bool ignore_repeat_track) {
 
-  while (!played_indexes_.isEmpty()) {
-    const QPersistentModelIndex idx = played_indexes_.takeLast();
-    if (idx.isValid() && idx != current_item_index_) return idx.row();
+  // I want to avoid the clean of the played_indexes_ so I am using an iterator instead of taking the last of the list
+  auto&& played_iterator = played_indexes_.end();
+
+  while (played_iterator != played_indexes_.begin()) {
+    std::advance(played_iterator, -1);
+    if (played_iterator->isValid() && *played_iterator != current_item_index_) return played_iterator->row();
   }
 
   int prev_virtual_index = PreviousVirtualIndex(current_virtual_index_, ignore_repeat_track);

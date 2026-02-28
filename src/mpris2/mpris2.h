@@ -109,7 +109,7 @@ class Mpris2 : public QObject {
   Q_PROPERTY(QString PlaybackStatus READ PlaybackStatus)
   Q_PROPERTY(QString LoopStatus READ LoopStatus WRITE SetLoopStatus)
   Q_PROPERTY(double Rate READ Rate WRITE SetRate)
-  Q_PROPERTY(bool Shuffle READ Shuffle WRITE SetShuffle)
+  Q_PROPERTY(QString Shuffle READ Shuffle WRITE SetShuffle)
   Q_PROPERTY(QVariantMap Metadata READ Metadata)
   Q_PROPERTY(double Volume READ Volume WRITE SetVolume)
   Q_PROPERTY(qint64 Position READ Position)
@@ -124,6 +124,7 @@ class Mpris2 : public QObject {
 
   // org.mpris.MediaPlayer2.TrackList MPRIS 2.0 Player interface
   Q_PROPERTY(Track_Ids Tracks READ Tracks)
+  Q_PROPERTY(Track_Ids LastPlayedTracks READ LastPlayedTracks)
   Q_PROPERTY(bool CanEditTracks READ CanEditTracks)
 
   // org.mpris.MediaPlayer2.Playlists MPRIS 2.1 Playlists interface
@@ -158,8 +159,8 @@ class Mpris2 : public QObject {
   void SetLoopStatus(const QString &value);
   double Rate() const;
   void SetRate(double rate);
-  bool Shuffle() const;
-  void SetShuffle(bool enable);
+  QString Shuffle() const;
+  void SetShuffle(const QString& value);
   QVariantMap Metadata() const;
   double Rating() const;
   void SetRating(double rating);
@@ -188,12 +189,20 @@ class Mpris2 : public QObject {
 
   // TrackList Properties
   Track_Ids Tracks() const;
+  Track_Ids LastPlayedTracks() const;
+  TrackMetadata LastPlayedTracksString() const;
+  Track_Ids FilteredTracks(const QString& filter) const;
+  TrackMetadata FilteredTracksString(const QString& filter) const;
   bool CanEditTracks() const;
 
   // Methods
   TrackMetadata GetTracksMetadata(const Track_Ids &tracks) const;
+  TrackMetadata GetTracksMetadataString(const QString& trackList) const;
   void AddTrack(const QString &uri, const QDBusObjectPath &afterTrack, bool setAsCurrent);
   void RemoveTrack(const QDBusObjectPath &trackId);
+  void EnqueueTracks(bool insertFirst, const Track_Ids& tracks);
+  void EnqueueTracksString(bool insertFirst, const QString& trackList);
+  void EnqueueTracksFiltered(bool insertFirst, const QString& filter);
   void GoTo(const QDBusObjectPath &trackId);
 
   // Playlist Properties

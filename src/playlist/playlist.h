@@ -190,6 +190,7 @@ class Playlist : public QAbstractListModel {
 
   int current_row() const;
   int last_played_row() const;
+  const QList<int>& virtual_items() const { return virtual_items_; }
   void reset_last_played() { last_played_item_index_ = QPersistentModelIndex(); }
   void reset_played_indexes() { played_indexes_.clear(); }
   int next_row(const bool ignore_repeat_track = false);
@@ -225,6 +226,7 @@ class Playlist : public QAbstractListModel {
   PlaylistSequence::RepeatMode RepeatMode() const { return playlist_sequence_ && !is_dynamic() ? playlist_sequence_->repeat_mode() : PlaylistSequence::RepeatMode::Off; }
 
   QUndoStack *undo_stack() const { return undo_stack_; }
+  const QList<QPersistentModelIndex>& played_indexes() const { return played_indexes_; }
 
   bool scrobbled() const { return scrobbled_; }
   void set_scrobbled(const bool state) { scrobbled_ = state; }
