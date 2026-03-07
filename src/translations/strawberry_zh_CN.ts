@@ -5066,7 +5066,7 @@ Are you sure you want to continue?</source>
       <translation>艺术家</translation>
     </message>
     <message>
-      <source>searches for all artists containing the word %1. </source>
+      <source>searches for all artists containing the word %1.</source>
       <translation>搜索所有包含单词 %1 的艺术家。</translation>
     </message>
     <message>
@@ -5074,11 +5074,15 @@ Are you sure you want to continue?</source>
       <translation>数字字段的搜索词可以用 %1 或 %2 前缀来细化搜索，例如：</translation>
     </message>
     <message>
+      <source>A word can be excluded with a preceding &quot;%1&quot;, if you need to search for a word including &quot;%1&quot;, place quotes around the word.</source>
+      <translation type="unfinished">A word can be excluded with a preceding &quot;%1&quot;, if you need to search for a word including &quot;%1&quot;, place quotes around the word.</translation>
+    </message>
+    <message>
       <source>rating</source>
       <translation>评分</translation>
     </message>
     <message>
-      <source>Multiple search terms can also be combined with &quot;%1&quot; (default) and &quot;%2&quot;, as well as grouped with parentheses. </source>
+      <source>Multiple search terms can also be combined with &quot;%1&quot; (default) and &quot;%2&quot;, as well as grouped with parentheses.</source>
       <translation>多个搜索词也可以与 &quot;%1&quot;（默认）和 &quot;%2&quot; 组合，以及用括号分组。</translation>
     </message>
     <message>
