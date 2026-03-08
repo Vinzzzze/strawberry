@@ -36,8 +36,8 @@
       <translation>Eğer Strawberry&apos;yi beğendiyseniz ve işinize yarıyorsa sponsor olmayı düşünebilir veya bağışta bulunabilirsiniz.</translation>
     </message>
     <message>
-      <source>You can sponsor the author on %1. You can also make a one-time payment through %2.</source>
-      <translation>Geliştiriciye %1 üzerinden sponsor olabilirsiniz. Ayrıca %2 üzerinden tek seferlik ödeme yapabilirsiniz.</translation>
+      <source>You can sponsor the author on %1 or %2. You can also make a one-time payment through %3.</source>
+      <translation type="unfinished">Geliştiriciye %1 veya %2 üzerinden sponsor olabilirsiniz. Ayrıca %3 üzerinden tek seferlik ödeme yapabilirsiniz.</translation>
     </message>
     <message>
       <source>Author and maintainer</source>

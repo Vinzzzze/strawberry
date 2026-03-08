@@ -36,7 +36,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>You can sponsor the author on %1. You can also make a one-time payment through %2.</source>
+        <source>You can sponsor the author on %1 or %2. You can also make a one-time payment through %3.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

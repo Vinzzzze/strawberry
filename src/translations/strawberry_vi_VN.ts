@@ -36,8 +36,8 @@
       <translation>Nếu bạn thích Strawberry và có thể sử dụng được thì hãy cân nhắc tài trợ hoặc quyên góp.</translation>
     </message>
     <message>
-      <source>You can sponsor the author on %1. You can also make a one-time payment through %2.</source>
-      <translation>Bạn có thể tài trợ cho tác giả trên %1. Bạn cũng có thể thực hiện thanh toán một lần thông qua %2.</translation>
+      <source>You can sponsor the author on %1 or %2. You can also make a one-time payment through %3.</source>
+      <translation type="unfinished">Bạn có thể tài trợ cho tác giả trên %1 hoặc %2. Bạn cũng có thể thực hiện thanh toán một lần thông qua %3.</translation>
     </message>
     <message>
       <source>Author and maintainer</source>

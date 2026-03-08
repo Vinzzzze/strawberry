@@ -36,8 +36,8 @@
       <translation>Se você gosta do Strawberry e o acha útil, considere patrocinar o projeto ou fazer uma doação.</translation>
     </message>
     <message>
-      <source>You can sponsor the author on %1. You can also make a one-time payment through %2.</source>
-      <translation>Você pode patrocinar o autor em %1. Você também pode fazer um pagamento único em %2.</translation>
+      <source>You can sponsor the author on %1 or %2. You can also make a one-time payment through %3.</source>
+      <translation type="unfinished">Você pode patrocinar o autor em %1 ou %2. Você também pode fazer um pagamento único em %3.</translation>
     </message>
     <message>
       <source>Author and maintainer</source>

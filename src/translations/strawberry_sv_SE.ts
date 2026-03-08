@@ -36,8 +36,8 @@
       <translation>Om du gillar Strawberry och har nytta av det, överväg att sponsra eller donera.</translation>
     </message>
     <message>
-      <source>You can sponsor the author on %1. You can also make a one-time payment through %2.</source>
-      <translation>Du kan sponsra upphovsmannen på %1. Du kan också göra en engångsbetalning genom %2.</translation>
+      <source>You can sponsor the author on %1 or %2. You can also make a one-time payment through %3.</source>
+      <translation type="unfinished">Du kan sponsra upphovsmannen på %1 eller %2. Du kan också göra en engångsbetalning genom %3.</translation>
     </message>
     <message>
       <source>Author and maintainer</source>

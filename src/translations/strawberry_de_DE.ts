@@ -36,8 +36,8 @@
       <translation>Wenn Ihnen Strawberry gefällt und Sie es nutzen können, sollten Sie sponsern oder spenden.</translation>
     </message>
     <message>
-      <source>You can sponsor the author on %1. You can also make a one-time payment through %2.</source>
-      <translation>Sie können den Autor auf %1 sponsern. Sie können auch eine einmalige Zahlung über %2 vornehmen.</translation>
+      <source>You can sponsor the author on %1 or %2. You can also make a one-time payment through %3.</source>
+      <translation type="unfinished">Sie können den Autor auf %1 oder %2 sponsern. Sie können auch eine einmalige Zahlung über %3 vornehmen.</translation>
     </message>
     <message>
       <source>Author and maintainer</source>

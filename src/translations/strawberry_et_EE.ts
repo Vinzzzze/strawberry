@@ -36,8 +36,8 @@
       <translation>Kui Strawberry sulle meeldib ja leiad ta olevat kasulik, kaalu rahalist toetust või annetamist.</translation>
     </message>
     <message>
-      <source>You can sponsor the author on %1. You can also make a one-time payment through %2.</source>
-      <translation>Võid toetada autorit saidis %1. Samuti on võimalik ühekordne makse %2 kaudu.</translation>
+      <source>You can sponsor the author on %1 or %2. You can also make a one-time payment through %3.</source>
+      <translation type="unfinished">Võid toetada autorit saidis %1 või %2. Samuti on võimalik ühekordne makse %3 kaudu.</translation>
     </message>
     <message>
       <source>Author and maintainer</source>

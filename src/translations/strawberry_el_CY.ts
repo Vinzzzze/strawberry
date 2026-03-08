@@ -36,8 +36,8 @@
       <translation type="unfinished">If you like Strawberry and can make use of it, consider sponsoring or donating.</translation>
     </message>
     <message>
-      <source>You can sponsor the author on %1. You can also make a one-time payment through %2.</source>
-      <translation>Μπορείτε να επιχορηγήσετε τον συγγραφέα στο %1. Μπορείτε επίσης να κάνετε μια εφάπαξ πληρωμή μέσω του %2.</translation>
+      <source>You can sponsor the author on %1 or %2. You can also make a one-time payment through %3.</source>
+      <translation type="unfinished">Μπορείτε να επιχορηγήσετε τον συγγραφέα στο %1 ή %2. Μπορείτε επίσης να κάνετε μια εφάπαξ πληρωμή μέσω του %3.</translation>
     </message>
     <message>
       <source>Author and maintainer</source>

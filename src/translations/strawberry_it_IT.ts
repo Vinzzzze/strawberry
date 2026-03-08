@@ -37,9 +37,9 @@ Il codice sorgente è disponibile su &apos;%1&apos;</translation>
       <translation>Se ti piace Strawberry e puoi farne uso, prendi in considerazione la sponsorizzazione o la donazione.</translation>
     </message>
     <message>
-      <source>You can sponsor the author on %1. You can also make a one-time payment through %2.</source>
-      <translation>Puoi sponsorizzare l&apos;autore su &apos;%1&apos;. 
-Puoi anche effettuare un pagamento una tantum tramite &apos;%2&apos;.</translation>
+      <source>You can sponsor the author on %1 or %2. You can also make a one-time payment through %3.</source>
+      <translation type="unfinished">Puoi sponsorizzare l&apos;autore su &apos;%1&apos; o &apos;%2&apos;. 
+Puoi anche effettuare un pagamento una tantum tramite &apos;%3&apos;.</translation>
     </message>
     <message>
       <source>Author and maintainer</source>

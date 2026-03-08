@@ -36,8 +36,8 @@
       <translation>Jeśli lubisz ten program i uważasz go za użyteczny, możesz rozważyć sponsoring lub donację.</translation>
     </message>
     <message>
-      <source>You can sponsor the author on %1. You can also make a one-time payment through %2.</source>
-      <translation>Możesz sponsorować autora na %1. Możesz także dokonać jednorazowej wpłaty poprzez %2.</translation>
+      <source>You can sponsor the author on %1 or %2. You can also make a one-time payment through %3.</source>
+      <translation type="unfinished">Możesz sponsorować autora na %1 lub %2. Możesz także dokonać jednorazowej wpłaty poprzez %3.</translation>
     </message>
     <message>
       <source>Author and maintainer</source>

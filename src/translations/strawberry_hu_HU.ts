@@ -36,8 +36,8 @@
       <translation>Ha tetszik a Strawberry, és ki tudja használni, fontolja meg a szponzorálást vagy az adományozást.</translation>
     </message>
     <message>
-      <source>You can sponsor the author on %1. You can also make a one-time payment through %2.</source>
-      <translation>A szerzőt itt szponzorálhatja: %1. Egyszeri összeggel ezen az oldalon támogathat: %2.</translation>
+      <source>You can sponsor the author on %1 or %2. You can also make a one-time payment through %3.</source>
+      <translation>A szerzőt itt szponzorálhatja: %1 vagy %2. Egyszeri összeggel ezen az oldalon támogathat: %3.</translation>
     </message>
     <message>
       <source>Author and maintainer</source>

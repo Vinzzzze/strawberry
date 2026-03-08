@@ -36,8 +36,8 @@
       <translation>Si vous aimez ce logiciel Strawberry et que vous pouvez en faire usage, envisagez de sponsoriser ou de faire un don.</translation>
     </message>
     <message>
-      <source>You can sponsor the author on %1. You can also make a one-time payment through %2.</source>
-      <translation>Vous pouvez sponsoriser l&apos;auteur sur %1. Vous pouvez également effectuer un paiement unique via %2.</translation>
+      <source>You can sponsor the author on %1 or %2. You can also make a one-time payment through %3.</source>
+      <translation>Vous pouvez sponsoriser l&apos;auteur sur %1 ou sur %2. Vous pouvez également effectuer un paiement unique via %3.</translation>
     </message>
     <message>
       <source>Author and maintainer</source>

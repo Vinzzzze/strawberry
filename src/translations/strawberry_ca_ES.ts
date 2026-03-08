@@ -36,8 +36,8 @@
       <translation>Si t'agrada Strawberry i pots fer-ne ús, considera patrocinar o donar.</translation>
     </message>
     <message>
-      <source>You can sponsor the author on %1. You can also make a one-time payment through %2.</source>
-      <translation>Podeu patrocinar l'autor a %1. També podeu fer un pagament únic a través de %2.</translation>
+      <source>You can sponsor the author on %1 or %2. You can also make a one-time payment through %3.</source>
+      <translation type="unfinished">Podeu patrocinar l'autor a %1 o %2. També podeu fer un pagament únic a través de %3.</translation>
     </message>
     <message>
       <source>Author and maintainer</source>

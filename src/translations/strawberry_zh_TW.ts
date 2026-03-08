@@ -37,8 +37,8 @@
       <translation>如果您喜歡 Strawberry 並覺得它對您有幫助，歡迎考慮贊助或捐款支持。</translation>
     </message>
     <message>
-      <source>You can sponsor the author on %1. You can also make a one-time payment through %2.</source>
-      <translation>您可以在 %1 贊助作者，也可以透過 %2 進行一次性付款。</translation>
+      <source>You can sponsor the author on %1 or %2. You can also make a one-time payment through %3.</source>
+      <translation type="unfinished">您可以在 %1 %2 贊助作者，也可以透過 %3 進行一次性付款。</translation>
     </message>
     <message>
       <source>Author and maintainer</source>

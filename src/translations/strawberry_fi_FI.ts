@@ -36,8 +36,8 @@
       <translation>Jos pidät Strawberrystä ja sinulla on sille käyttöä, harkitse sponsorointia tai lahjoitusta.</translation>
     </message>
     <message>
-      <source>You can sponsor the author on %1. You can also make a one-time payment through %2.</source>
-      <translation>Voit sponsoroida tekijää %1:ssa. Voit myös tehdä kertalahjoituksen osoiteessa %2.</translation>
+      <source>You can sponsor the author on %1 or %2. You can also make a one-time payment through %3.</source>
+      <translation type="unfinished">Voit sponsoroida tekijää %1 tai %2:ssa. Voit myös tehdä kertalahjoituksen osoiteessa %3.</translation>
     </message>
     <message>
       <source>Author and maintainer</source>
