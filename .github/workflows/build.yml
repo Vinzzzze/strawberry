@@ -757,7 +757,7 @@ jobs:
         df -h
     - name: Build FreeBSD
       id: build-freebsd
-      uses: vmactions/freebsd-vm@v1.4.2
+      uses: vmactions/freebsd-vm@v1.4.3
       with:
         usesh: true
         mem: 8192
@@ -783,7 +783,7 @@ jobs:
         submodules: recursive
     - name: Build OpenBSD
       id: build-openbsd
-      uses: vmactions/openbsd-vm@v1.3.6
+      uses: vmactions/openbsd-vm@v1.3.7
       with:
         usesh: true
         mem: 4096
@@ -1345,7 +1345,7 @@ jobs:
         run: choco install --no-progress rsync
 
       - name: Cleanup PATH
-        uses: egor-tensin/cleanup-path@v4
+        uses: egor-tensin/cleanup-path@v5
         with:
           dirs: ${{env.prefix_path_backslash}}\bin;C:\Windows;C:\Windows\system32;C:\Program Files\Git\bin;C:\Program Files\CMake\bin;C:\Program Files\GitHub CLI;C:\ProgramData\Chocolatey\bin;C:\Program Files (x86)\NSIS
 
