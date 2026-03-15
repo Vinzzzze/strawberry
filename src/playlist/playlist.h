@@ -422,7 +422,7 @@ class Playlist : public QAbstractListModel {
   // Must be called whenever items_ is changed.
   void InvalidateItemRows();
 
-  int ReshuffleIndices(QList<int>& virtual_items, const PlaylistSequence::ShuffleMode shuffle_mode, const int base_reference, const bool album_keep_track_order);
+  int ReshuffleIndices(QList<int>& virtual_items, const PlaylistSequence::ShuffleMode shuffle_mode, const bool album_keep_track_order);
 
   void RemoveItemsNotInQueue();
 
