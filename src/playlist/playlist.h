@@ -319,6 +319,8 @@ class Playlist : public QAbstractListModel {
 
   void ReloadItem(const QPersistentModelIndex &idx, PlaylistItemPtr item, const bool saved = false, const quint64 save_generation = -1, const Song &fallback_metadata = Song());
 
+  void Shuffle(const PlaylistSequence::ShuffleMode shuffle_mode = PlaylistSequence::ShuffleMode::All);
+
  public Q_SLOTS:
   void set_current_row(const int i, const Playlist::AutoScroll autoscroll = Playlist::AutoScroll::Maybe, const bool is_stopping = false, const bool force_inform = false);
   void Paused();
@@ -332,7 +334,6 @@ class Playlist : public QAbstractListModel {
   void Clear();
   void RemoveDuplicateSongs();
   void RemoveUnavailableSongs();
-  void Shuffle();
 
   void ShuffleModeChanged(const PlaylistSequence::ShuffleMode shuffle_mode);
 
@@ -391,6 +392,8 @@ class Playlist : public QAbstractListModel {
   void MoveItemWithoutUndo(const int source, const int dest);
   void MoveItemsWithoutUndo(int start, const QList<int> &dest_rows);
   void ReOrderWithoutUndo(const PlaylistItemPtrList &new_items);
+
+  int ReshuffleIndices(QList<int>& virtual_items, const PlaylistSequence::ShuffleMode shuffle_mode, const int base_reference, const bool album_keep_track_order);
 
   void RemoveItemsNotInQueue();
 
