@@ -2478,7 +2478,7 @@ void Playlist::Shuffle(const PlaylistSequence::ShuffleMode shuffle_mode) {
     index_items.push_back(i);
   }
 
-  ReshuffleIndices(index_items, shuffle_mode, begin, true);
+  ReshuffleIndices(index_items, shuffle_mode, true);
 
   PlaylistItemPtrList new_items;
 
@@ -2542,11 +2542,11 @@ void Playlist::ReshuffleIndices() {
   // First, cancel the replay position
   next_song_after_queued_ = -1;
 
-  current_virtual_index_ = ReshuffleIndices(virtual_items_, ShuffleMode(), 0, false);
+  current_virtual_index_ = ReshuffleIndices(virtual_items_, ShuffleMode(), false);
 
 }
 
-int Playlist::ReshuffleIndices(QList<int>& virtual_items, const PlaylistSequence::ShuffleMode shuffle_mode, const int base_reference, const bool album_keep_track_order) {
+int Playlist::ReshuffleIndices(QList<int>& virtual_items, const PlaylistSequence::ShuffleMode shuffle_mode, const bool album_keep_track_order) {
 
   static std::mt19937 rng{std::random_device{}()};
 
@@ -2561,14 +2561,17 @@ int Playlist::ReshuffleIndices(QList<int>& virtual_items, const PlaylistSequence
     case PlaylistSequence::ShuffleMode::InsideAlbum:{
       std::shuffle(virtual_items.begin(), virtual_items.end(), rng);
 
-      // If the user is currently playing a song, force its track to be first
-      // Also check last_played_row() for cases where current_row() hasn't been set yet (e.g., on app startup)
-      int reference_row = current_row();
-      if (reference_row == -1 && last_played_row() != -1) {
-        reference_row = last_played_row();
-      }
-      if (reference_row > base_reference) {
-        std::swap(virtual_items[0], virtual_items[reference_row - base_reference]);
+      if (!virtual_items.isEmpty()) {
+        // If the user is currently playing a song, force its track to be first
+        // Also check last_played_row() for cases where current_row() hasn't been set yet (e.g., on app startup)
+        int reference_row = current_row();
+        if (reference_row == -1 && last_played_row() != -1) {
+          reference_row = last_played_row();
+        }
+        const int reference_pos = virtual_items.indexOf(reference_row);
+        if (reference_pos > 0) {
+          std::swap(virtual_items[0], virtual_items[reference_pos]);
+        }
       }
       break;
     }
@@ -2598,8 +2601,8 @@ int Playlist::ReshuffleIndices(QList<int>& virtual_items, const PlaylistSequence
       if (reference_row != -1) {
         const QString key = items_[reference_row]->EffectiveMetadata().AlbumKey();
         const qint64 pos = shuffled_album_keys.indexOf(key);
-        if (pos > base_reference) {
-          std::swap(shuffled_album_keys[0], shuffled_album_keys[pos - base_reference]);
+        if (pos > 0) {
+          std::swap(shuffled_album_keys[0], shuffled_album_keys[pos]);
         }
       }
 
@@ -2651,8 +2654,8 @@ int Playlist::ReshuffleIndices(QList<int>& virtual_items, const PlaylistSequence
       if (reference_row != -1) {
         const QString key = items_[reference_row]->EffectiveMetadata().GroupingKey();
         const qint64 pos = shuffled_grouping_keys.indexOf(key);
-        if (pos > base_reference) {
-          std::swap(shuffled_grouping_keys[0], shuffled_grouping_keys[pos - base_reference]);
+        if (pos > 0) {
+          std::swap(shuffled_grouping_keys[0], shuffled_grouping_keys[pos]);
         }
       }
 

@@ -400,7 +400,7 @@ class Playlist : public QAbstractListModel {
   void MoveItemsWithoutUndo(int start, const QList<int> &dest_rows);
   void ReOrderWithoutUndo(const PlaylistItemPtrList &new_items);
 
-  int ReshuffleIndices(QList<int>& virtual_items, const PlaylistSequence::ShuffleMode shuffle_mode, const int base_reference, const bool album_keep_track_order);
+  int ReshuffleIndices(QList<int>& virtual_items, const PlaylistSequence::ShuffleMode shuffle_mode, const bool album_keep_track_order);
 
   void RemoveItemsNotInQueue();
 
