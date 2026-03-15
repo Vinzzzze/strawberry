@@ -3190,6 +3190,18 @@ If there are no matches then it will use the largest image in the directory.</so
         <translation type="unfinished"></translation>
     </message>
     <message>
+      <source>Single track as random element</source>
+      <translation type="unfinished"></translation>
+    </message>
+    <message>
+      <source>Album as random element</source>
+      <translation type="unfinished"></translation>
+    </message>
+    <message>
+      <source>Grouped tracks as random element</source>
+      <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Ctrl+H</source>
         <translation type="unfinished"></translation>
     </message>

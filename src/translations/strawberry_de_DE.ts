@@ -3191,6 +3191,18 @@ Falls es keine Treffer gibt, wird das größte Bild aus dem Verzeichnis ausgewä
       <translation>M&amp;ische die Wiedergabeliste</translation>
     </message>
     <message>
+      <source>Single track as random element</source>
+      <translation type="unfinished">Single track as random element</translation>
+    </message>
+    <message>
+      <source>Album as random element</source>
+      <translation type="unfinished">Album as random element</translation>
+    </message>
+    <message>
+      <source>Grouped tracks as random element</source>
+      <translation type="unfinished">Grouped tracks as random element</translation>
+    </message>
+    <message>
       <source>Ctrl+H</source>
       <translation>Strg+H</translation>
     </message>

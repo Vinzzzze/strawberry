@@ -3191,6 +3191,18 @@ S&apos;il n&apos;en existe pas alors Strawberry utilisera la plus grande image d
       <translation>Mélan&amp;ger la liste de lecture</translation>
     </message>
     <message>
+      <source>Single track as random element</source>
+      <translation>La granularité du mélange est la piste</translation>
+    </message>
+    <message>
+      <source>Album as random element</source>
+      <translation>La granularité du mélange est l'album</translation>
+    </message>
+    <message>
+      <source>Grouped tracks as random element</source>
+      <translation>La granularité du mélange est le groupement de pistes</translation>
+    </message>
+    <message>
       <source>Ctrl+H</source>
       <translation type="unfinished">Ctrl+H</translation>
     </message>
