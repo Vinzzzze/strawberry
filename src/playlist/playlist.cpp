@@ -2674,7 +2674,7 @@ void Playlist::Shuffle(const PlaylistSequence::ShuffleMode shuffle_mode) {
     index_items.push_back(i);
   }
 
-  ReshuffleIndices(index_items, shuffle_mode, begin, true);
+  ReshuffleIndices(index_items, shuffle_mode, true);
 
   PlaylistItemPtrList new_items;
 
@@ -2738,11 +2738,11 @@ void Playlist::ReshuffleIndices() {
   // First, cancel the replay position
   next_song_after_queued_ = -1;
 
-  current_virtual_index_ = ReshuffleIndices(virtual_items_, ShuffleMode(), 0, false);
+  current_virtual_index_ = ReshuffleIndices(virtual_items_, ShuffleMode(), false);
 
 }
 
-int Playlist::ReshuffleIndices(QList<int>& virtual_items, const PlaylistSequence::ShuffleMode shuffle_mode, const int base_reference, const bool album_keep_track_order) {
+int Playlist::ReshuffleIndices(QList<int>& virtual_items, const PlaylistSequence::ShuffleMode shuffle_mode, const bool album_keep_track_order) {
 
   static std::mt19937 rng{std::random_device{}()};
 
@@ -2792,8 +2792,8 @@ int Playlist::ReshuffleIndices(QList<int>& virtual_items, const PlaylistSequence
       if (reference_row != -1) {
         const QString key = items_[reference_row]->EffectiveMetadata().AlbumKey();
         const qint64 pos = shuffled_album_keys.indexOf(key);
-        if (pos > base_reference) {
-          std::swap(shuffled_album_keys[0], shuffled_album_keys[pos - base_reference]);
+        if (pos > 0) {
+          std::swap(shuffled_album_keys[0], shuffled_album_keys[pos]);
         }
       }
 
@@ -2845,8 +2845,8 @@ int Playlist::ReshuffleIndices(QList<int>& virtual_items, const PlaylistSequence
       if (reference_row != -1) {
         const QString key = items_[reference_row]->EffectiveMetadata().GroupingKey();
         const qint64 pos = shuffled_grouping_keys.indexOf(key);
-        if (pos > base_reference) {
-          std::swap(shuffled_grouping_keys[0], shuffled_grouping_keys[pos - base_reference]);
+        if (pos > 0) {
+          std::swap(shuffled_grouping_keys[0], shuffled_grouping_keys[pos]);
         }
       }
 
