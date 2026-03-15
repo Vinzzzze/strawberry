@@ -96,7 +96,7 @@ class PlaylistManagerInterface : public QObject {
 
   // Convenience slots that defer to either current() or active()
   virtual void ClearCurrent() = 0;
-  virtual void ShuffleCurrent() = 0;
+  virtual void ShuffleCurrent(const PlaylistSequence::ShuffleMode shuffle_mode) = 0;
   virtual void RemoveDuplicatesCurrent() = 0;
   virtual void RemoveUnavailableCurrent() = 0;
   virtual void SetActivePlaying() = 0;

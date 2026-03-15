@@ -123,7 +123,7 @@ class PlaylistManager : public PlaylistManagerInterface {
 
   // Convenience slots that defer to either current() or active()
   void ClearCurrent() override;
-  void ShuffleCurrent() override;
+  void ShuffleCurrent(const PlaylistSequence::ShuffleMode shuffle_mode) override;
   void RemoveDuplicatesCurrent() override;
   void RemoveUnavailableCurrent() override;
 

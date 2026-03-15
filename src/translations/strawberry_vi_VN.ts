@@ -3199,6 +3199,18 @@ Nếu không có kết quả trùng khớp thì nó sẽ sử dụng hình ảnh
       <translation>&amp;Trộn ngẫu nhiên danh sách phát</translation>
     </message>
     <message>
+      <source>Single track as random element</source>
+      <translation type="unfinished">Single track as random element</translation>
+    </message>
+    <message>
+      <source>Album as random element</source>
+      <translation type="unfinished">Album as random element</translation>
+    </message>
+    <message>
+      <source>Grouped tracks as random element</source>
+      <translation type="unfinished">Grouped tracks as random element</translation>
+    </message>
+    <message>
       <source>Ctrl+H</source>
       <translation>Ctrl+H</translation>
     </message>
