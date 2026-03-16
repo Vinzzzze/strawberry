@@ -424,6 +424,10 @@ void PlaylistManager::ClearCurrent() {
   current()->Clear();
 }
 
+void PlaylistManager::ShuffleCurrent() {
+  current()->Shuffle();
+}
+
 void PlaylistManager::ShuffleCurrent(const PlaylistSequence::ShuffleMode shuffle_mode) {
   current()->Shuffle(shuffle_mode);
 }

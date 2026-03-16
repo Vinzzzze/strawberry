@@ -2055,6 +2055,33 @@ void Playlist::ReloadItems(const QList<int> &rows) {
 
 }
 
+void Playlist::Shuffle() {
+
+  PlaylistItemPtrList new_items(items_);
+
+  int begin = 0;
+  if (current_item_index_.isValid()) {
+    if (new_items[0] != new_items[current_item_index_.row()]) {
+      std::swap(new_items[0], new_items[current_item_index_.row()]);
+    }
+    begin = 1;
+  }
+
+  if (dynamic_playlist_ && current_item_index_.isValid()) {
+    begin += current_item_index_.row() + 1;
+  }
+
+  const int count = static_cast<int>(items_.count());
+  for (int i = begin; i < count; ++i) {
+    const int new_pos = i + (rand() % (count - i));
+
+    std::swap(new_items[i], new_items[new_pos]);
+  }
+
+  undo_stack_->push(new PlaylistUndoCommandShuffleItems(this, new_items));
+
+}
+
 void Playlist::Shuffle(const PlaylistSequence::ShuffleMode shuffle_mode) {
 
   int begin = 0;

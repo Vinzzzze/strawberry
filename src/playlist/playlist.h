@@ -308,6 +308,8 @@ class Playlist : public QAbstractListModel {
 
   void ItemReload(const QPersistentModelIndex &idx, const Song &old_metadata, const bool metadata_edit);
 
+  void Shuffle(const PlaylistSequence::ShuffleMode shuffle_mode);
+
  public Q_SLOTS:
   void set_current_row(const int i, const Playlist::AutoScroll autoscroll = Playlist::AutoScroll::Maybe, const bool is_stopping = false, const bool force_inform = false);
   void Paused();
@@ -321,7 +323,8 @@ class Playlist : public QAbstractListModel {
   void Clear();
   void RemoveDuplicateSongs();
   void RemoveUnavailableSongs();
-  void Shuffle(const PlaylistSequence::ShuffleMode shuffle_mode);
+  // TODO : this method is only used for external unit tests : the version with parameter is the one that is used.
+  void Shuffle();
 
   void ShuffleModeChanged(const PlaylistSequence::ShuffleMode shuffle_mode);
 
