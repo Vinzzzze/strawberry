@@ -37,7 +37,7 @@
     </message>
     <message>
       <source>You can sponsor the author on %1 or %2. You can also make a one-time payment through %3.</source>
-      <translation type="unfinished">Bạn có thể tài trợ cho tác giả trên %1 hoặc %2. Bạn cũng có thể thực hiện thanh toán một lần thông qua %3.</translation>
+      <translation>Bạn có thể tài trợ cho tác giả trên %1 hoặc %2. Bạn cũng có thể thực hiện thanh toán một lần thông qua %3.</translation>
     </message>
     <message>
       <source>Author and maintainer</source>
@@ -4016,7 +4016,7 @@ Nếu không có kết quả trùng khớp thì nó sẽ sử dụng hình ảnh
     </message>
     <message>
       <source>Shuffle grouping</source>
-      <translation type="unfinished">Trộn ngẫu nhiên nâng cao</translation>
+      <translation>Trộn ngẫu nhiên nâng cao</translation>
     </message>
     <message>
       <source>Don&apos;t repeat</source>
@@ -4673,7 +4673,7 @@ Nếu không có kết quả trùng khớp thì nó sẽ sử dụng hình ảnh
     </message>
     <message>
       <source>Shuffle grouping</source>
-      <translation type="unfinished">Trộn ngẫu nhiên nâng cao</translation>
+      <translation>Trộn ngẫu nhiên nâng cao</translation>
     </message>
   </context>
   <context>
