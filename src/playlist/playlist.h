@@ -96,6 +96,8 @@ class Playlist : public QAbstractListModel {
                     const QString &special_type = QString(),
                     const bool favorite = false,
                     const int grouped_before_queue = GROUPED_BEFORE_QUEUE_DEFAULT,
+                    const int half_playing_time_s = 0,
+                    const int percent_interest_song = 50,
                     QObject *parent = nullptr);
 
   ~Playlist() override;
@@ -216,6 +218,7 @@ class Playlist : public QAbstractListModel {
   bool has_item_at(const int index) const { return index >= 0 && index < rowCount(); }
 
   PlaylistItemPtr current_item() const;
+  PlaylistItemPtr current_item(quint64& start_offset_ns, int& end_offset_s) const;
 
   PlaylistItem::Options current_item_options() const;
   Song current_item_metadata() const;
@@ -234,6 +237,12 @@ class Playlist : public QAbstractListModel {
 
   QUndoStack *undo_stack() const { return undo_stack_; }
   const QList<QPersistentModelIndex>& played_indexes() const { return played_indexes_; }
+
+  int half_playing_time_s() const { return half_playing_time_s_; }
+  void UpdatePlayingTime(const int time_s) { half_playing_time_s_ = time_s; Save(); }
+
+  int percent_interest_song() const { return percent_interest_song_; }
+  void UpdatePlayingPosition(const int percent_time) { percent_interest_song_ = percent_time; Save(); }
 
   bool scrobbled() const { return scrobbled_; }
   void set_scrobbled(const bool state) { scrobbled_ = state; }
@@ -458,6 +467,10 @@ class Playlist : public QAbstractListModel {
   bool auto_sort_;
   Column sort_column_;
   Qt::SortOrder sort_order_;
+
+  // Variables to maintain the time to play the song
+  int half_playing_time_s_;
+  int percent_interest_song_;
 
   // Variables to count the number of times the queue list had been ignored due to grouping values
   int left_grouped_song_before_queue_;
