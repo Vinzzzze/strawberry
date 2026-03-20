@@ -4396,6 +4396,10 @@ S&apos;il n&apos;en existe pas alors Strawberry utilisera la plus grande image d
       <source>No matches found.  Clear the search box to show the whole playlist again.</source>
       <translation>Aucune correspondance trouvée. Videz le champ de recherche pour afficher à nouveau la totalité de la liste de lecture.</translation>
     </message>
+    <message>
+      <source>Show the collection option</source>
+      <translation>Affiche les options de la playlist</translation>
+    </message>
   </context>
   <context>
     <name>PlaylistDelegateBase</name>
@@ -5290,6 +5294,14 @@ Are you sure you want to continue?</source>
     <message>
       <source>Can&apos;t add directory %1 with special filesystem %2 to collection</source>
       <translation>Impossible d&apos;ajouter un répertoire %1 avec le système de fichiers spécial %2 à la bibliothèque</translation>
+    </message>
+    <message>
+      <source>The time played before and after the position time selected in seconds (0 for playing the complete track)</source>
+      <translation type="unfinished">Temps d'écoute avant et après le temps de référence sélectionné, en secondes (0 pour jouer la piste complète)</translation>
+    </message>
+    <message>
+      <source>The position time reference selected in percent of the track length</source>
+      <translation type="unfinished">Position du temps de référence sélectionné en pourcentage de la piste</translation>
     </message>
   </context>
   <context>

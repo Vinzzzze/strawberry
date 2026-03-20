@@ -4396,6 +4396,10 @@ Hvis ingen ord passer, blir det største bildet i mappen brukt.</translation>
       <source>No matches found.  Clear the search box to show the whole playlist again.</source>
       <translation>Ingen treff.  Visk ut søkefeltet for å vise hele spillelisten igjen.</translation>
     </message>
+    <message>
+      <source>Show the collection option</source>
+      <translation type="unfinished">Show the collection option</translation>
+    </message>
   </context>
   <context>
     <name>PlaylistDelegateBase</name>
@@ -5290,6 +5294,14 @@ Er du sikker?</translation>
     <message>
       <source>Can&apos;t add directory %1 with special filesystem %2 to collection</source>
       <translation type="unfinished">Can&apos;t add directory %1 with special filesystem %2 to collection</translation>
+    </message>
+    <message>
+      <source>The time played before and after the position time selected in seconds (0 for playing the complete track)</source>
+      <translation type="unfinished">The time played before and after the position time selected in seconds (0 for playing the complete track)</translation>
+    </message>
+    <message>
+      <source>The position time reference selected in percent of the track length</source>
+      <translation type="unfinished">The position time reference selected in percent of the track length</translation>
     </message>
   </context>
   <context>
