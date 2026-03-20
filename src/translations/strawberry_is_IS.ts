@@ -4396,6 +4396,10 @@ Ef engar samsvaranir finnast, verður notast víð stærstu myndina í möppunni
       <source>No matches found.  Clear the search box to show the whole playlist again.</source>
       <translation>Engar samsvaranir fundust. Hreinsaðu leitarreitinn til að birta allt safnið aftur.</translation>
     </message>
+    <message>
+      <source>Show the collection option</source>
+      <translation type="unfinished">Show the collection option</translation>
+    </message>
   </context>
   <context>
     <name>PlaylistDelegateBase</name>
@@ -5290,6 +5294,14 @@ Ertu viss um að þú viljir halda áfram?</translation>
     <message>
       <source>Can&apos;t add directory %1 with special filesystem %2 to collection</source>
       <translation>Ekki er hægt að bæta möppunni %1 með sértæka skráakerfinu %2 við safnið</translation>
+    </message>
+    <message>
+      <source>The time played before and after the position time selected in seconds (0 for playing the complete track)</source>
+      <translation type="unfinished">The time played before and after the position time selected in seconds (0 for playing the complete track)</translation>
+    </message>
+    <message>
+      <source>The position time reference selected in percent of the track length</source>
+      <translation type="unfinished">The position time reference selected in percent of the track length</translation>
     </message>
   </context>
   <context>

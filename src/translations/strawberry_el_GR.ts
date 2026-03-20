@@ -4396,6 +4396,10 @@ If there are no matches then it will use the largest image in the directory.</so
       <source>No matches found.  Clear the search box to show the whole playlist again.</source>
       <translation>Δεν βρέθηκαν αποτελέσματα. Καθαρίστε το πλαίσιο αναζήτησης για να εμφανιστεί ολόκληρη η λίστα αναπαραγωγής.</translation>
     </message>
+    <message>
+      <source>Show the collection option</source>
+      <translation type="unfinished">Show the collection option</translation>
+    </message>
   </context>
   <context>
     <name>PlaylistDelegateBase</name>
@@ -5290,6 +5294,14 @@ Are you sure you want to continue?</source>
     <message>
       <source>Can&apos;t add directory %1 with special filesystem %2 to collection</source>
       <translation type="unfinished">Can&apos;t add directory %1 with special filesystem %2 to collection</translation>
+    </message>
+    <message>
+      <source>The time played before and after the position time selected in seconds (0 for playing the complete track)</source>
+      <translation type="unfinished">The time played before and after the position time selected in seconds (0 for playing the complete track)</translation>
+    </message>
+    <message>
+      <source>The position time reference selected in percent of the track length</source>
+      <translation type="unfinished">The position time reference selected in percent of the track length</translation>
     </message>
   </context>
   <context>
