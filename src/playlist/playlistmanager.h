@@ -75,7 +75,7 @@ class PlaylistManager : public PlaylistManagerInterface {
   int grouped_before_queue() const { return grouped_before_queue_; }
 
   // Update the grouped before queue value : we have to do more than just update the attribute
-  void update_grouped_before_queue(const int grouped_before_queue);
+  void update_setting(const int grouped_before_queue);
 
   // Returns the collection of playlists managed by this PlaylistManager.
   QList<Playlist*> GetAllPlaylists() const override;
