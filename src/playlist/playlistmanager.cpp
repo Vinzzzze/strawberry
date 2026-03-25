@@ -97,13 +97,13 @@ PlaylistManager::~PlaylistManager() {
 
 }
 
-void PlaylistManager::update_grouped_before_queue(const int grouped_before_queue) {
+void PlaylistManager::update_setting(const int grouped_before_queue) {
 
   grouped_before_queue_ = grouped_before_queue;
 
   QList<Data> datas = playlists_.values();
   for (Data &data : datas) {
-    data.p->update_grouped_before_queue(grouped_before_queue);
+    data.p->update_setting(grouped_before_queue);
   }
 
 }
