@@ -1161,6 +1161,10 @@ Se non ci saranno corrispondenze, userà l&apos;immagine più grande che si trov
       <translation>Abilita l&apos;eliminazione file nel menu contestuale tasto destro</translation>
     </message>
     <message>
+      <source>Remove duplicates when adding tracks to the playlist</source>
+      <translation type="unfinished">Remove duplicates when adding tracks to the playlist</translation>
+    </message>
+    <message>
       <source>Add directory...</source>
       <translation>Aggiungi cartella...</translation>
     </message>
@@ -4713,6 +4717,10 @@ Non è stato possibile eliminare i seguenti file:</translation>
     <message>
       <source>Enable delete files in the right click context menu</source>
       <translation>Abilita l&apos;eliminazione file nel menu contestuale tasto destro</translation>
+    </message>
+    <message>
+      <source>Remove duplicates when adding tracks to the playlist</source>
+      <translation type="unfinished">Remove duplicates when adding tracks to the playlist</translation>
     </message>
     <message>
       <source>Automatically sort playlist when inserting songs</source>

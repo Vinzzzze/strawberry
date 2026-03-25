@@ -1159,6 +1159,10 @@ Als er geen match is wordt de grootste afbeelding uit de map gebruikt.</translat
       <translation>Bestanden verwijderen via rechterklik contextmenu inschakelen</translation>
     </message>
     <message>
+      <source>Remove duplicates when adding tracks to the playlist</source>
+      <translation type="unfinished">Remove duplicates when adding tracks to the playlist</translation>
+    </message>
+    <message>
       <source>Add directory...</source>
       <translation>Map toevoegen…</translation>
     </message>
@@ -4706,6 +4710,10 @@ Als er geen match is wordt de grootste afbeelding uit de map gebruikt.</translat
     <message>
       <source>Enable delete files in the right click context menu</source>
       <translation>Bestanden verwijderen via rechterklik contextmenu inschakelen</translation>
+    </message>
+    <message>
+      <source>Remove duplicates when adding tracks to the playlist</source>
+      <translation type="unfinished">Remove duplicates when adding tracks to the playlist</translation>
     </message>
     <message>
       <source>Automatically sort playlist when inserting songs</source>

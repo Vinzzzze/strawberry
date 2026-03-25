@@ -1159,6 +1159,10 @@ S&apos;il n&apos;en existe pas alors Strawberry utilisera la plus grande image d
       <translation>Activer la suppression des fichiers dans le menu contextuel du clic droit</translation>
     </message>
     <message>
+      <source>Remove duplicates when adding tracks to the playlist</source>
+      <translation>Supprimer les doublons lors de l'ajout de pistes à la liste de lecture.</translation>
+    </message>
+    <message>
       <source>Add directory...</source>
       <translation>Ajouter un dossier...</translation>
     </message>
@@ -4706,6 +4710,10 @@ S&apos;il n&apos;en existe pas alors Strawberry utilisera la plus grande image d
     <message>
       <source>Enable delete files in the right click context menu</source>
       <translation>Activer la suppression des fichiers dans le menu contextuel du clic droit</translation>
+    </message>
+    <message>
+      <source>Remove duplicates when adding tracks to the playlist</source>
+      <translation>Supprimer les doublons lors de l'ajout de pistes à la liste de lecture.</translation>
     </message>
     <message>
       <source>Automatically sort playlist when inserting songs</source>

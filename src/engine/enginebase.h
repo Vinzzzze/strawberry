@@ -140,6 +140,8 @@ class EngineBase : public QObject {
   bool crossfade_same_album() const { return crossfade_same_album_; }
   bool IsEqualizerEnabled() { return equalizer_enabled_; }
 
+  inline bool remove_duplicates() const { return remove_duplicates_; }
+
   static const int kScopeSize = 1024;
 
   QVariant device() { return device_; }
@@ -235,6 +237,8 @@ class EngineBase : public QObject {
   // Channels
   bool channels_enabled_;
   int channels_;
+
+  bool remove_duplicates_;
 
   // Options
   bool bs2b_enabled_;

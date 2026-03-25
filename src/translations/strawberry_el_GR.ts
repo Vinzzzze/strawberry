@@ -1159,6 +1159,10 @@ If there are no matches then it will use the largest image in the directory.</so
       <translation>Ενεργοποίηση διαγραφής αρχείων στο μενού δεξιού κλικ</translation>
     </message>
     <message>
+      <source>Remove duplicates when adding tracks to the playlist</source>
+      <translation type="unfinished">Remove duplicates when adding tracks to the playlist</translation>
+    </message>
+    <message>
       <source>Add directory...</source>
       <translation/>
     </message>
@@ -4705,7 +4709,11 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>Enable delete files in the right click context menu</source>
-      <translation type="unfinished">Enable delete files in the right click context menu</translation>
+      <translation>Ενεργοποίηση διαγραφής αρχείων στο μενού δεξιού κλικ</translation>
+    </message>
+    <message>
+      <source>Remove duplicates when adding tracks to the playlist</source>
+      <translation type="unfinished">Remove duplicates when adding tracks to the playlist</translation>
     </message>
     <message>
       <source>Automatically sort playlist when inserting songs</source>

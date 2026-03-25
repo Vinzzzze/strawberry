@@ -1159,6 +1159,10 @@ Kui vasteid pole, kasutab ta kaustas asuvat suurimat pilti.</translation>
       <translation>Luba failide kustutamine paremklõpsuga kontekstimenüüs</translation>
     </message>
     <message>
+      <source>Remove duplicates when adding tracks to the playlist</source>
+      <translation type="unfinished">Remove duplicates when adding tracks to the playlist</translation>
+    </message>
+    <message>
       <source>Add directory...</source>
       <translation>Lisa kaust...</translation>
     </message>
@@ -4706,6 +4710,10 @@ Kui vasteid pole, kasutab ta kaustas asuvat suurimat pilti.</translation>
     <message>
       <source>Enable delete files in the right click context menu</source>
       <translation>Luba failide kustutamine paremklõpsuga kontekstimenüüs</translation>
+    </message>
+    <message>
+      <source>Remove duplicates when adding tracks to the playlist</source>
+      <translation type="unfinished">Remove duplicates when adding tracks to the playlist</translation>
     </message>
     <message>
       <source>Automatically sort playlist when inserting songs</source>

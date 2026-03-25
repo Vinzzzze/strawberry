@@ -1159,6 +1159,10 @@ Se não houver resultados, ele usará a maior imagem no diretório.</translation
       <translation type="unfinished">Enable delete files in the right click context menu</translation>
     </message>
     <message>
+      <source>Remove duplicates when adding tracks to the playlist</source>
+      <translation type="unfinished">Remove duplicates when adding tracks to the playlist</translation>
+    </message>
+    <message>
       <source>Add directory...</source>
       <translation>Adicionar diretório...</translation>
     </message>
@@ -4706,6 +4710,10 @@ Se não houver resultados, ele usará a maior imagem no diretório.</translation
     <message>
       <source>Enable delete files in the right click context menu</source>
       <translation type="unfinished">Enable delete files in the right click context menu</translation>
+    </message>
+    <message>
+      <source>Remove duplicates when adding tracks to the playlist</source>
+      <translation type="unfinished">Remove duplicates when adding tracks to the playlist</translation>
     </message>
     <message>
       <source>Automatically sort playlist when inserting songs</source>

@@ -38,6 +38,7 @@
 #include "enginebase.h"
 #include "constants/backendsettings.h"
 #include "constants/networkproxysettings.h"
+#include "constants/playlistsettings.h"
 #ifdef HAVE_SPOTIFY
 #  include "constants/spotifysettings.h"
 #endif
@@ -78,6 +79,7 @@ EngineBase::EngineBase(QObject *parent)
       proxy_authentication_(false),
       channels_enabled_(false),
       channels_(0),
+      remove_duplicates_(false),
       bs2b_enabled_(false),
       http2_enabled_(true),
       strict_ssl_enabled_(false),
@@ -199,6 +201,12 @@ void EngineBase::ReloadSettings() {
   }
 
   strict_ssl_enabled_ = s.value(BackendSettings::kStrictSSL, false).toBool();
+
+  s.endGroup();
+
+  s.beginGroup(PlaylistSettings::kSettingsGroup);
+
+  remove_duplicates_ = s.value(PlaylistSettings::kRemoveDuplicates, false).toBool();
 
   s.endGroup();
 

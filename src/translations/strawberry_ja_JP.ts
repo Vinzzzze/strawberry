@@ -1159,6 +1159,10 @@ If there are no matches then it will use the largest image in the directory.</so
       <translation>右クリックメニューでの削除を有効化</translation>
     </message>
     <message>
+      <source>Remove duplicates when adding tracks to the playlist</source>
+      <translation type="unfinished">Remove duplicates when adding tracks to the playlist</translation>
+    </message>
+    <message>
       <source>Add directory...</source>
       <translation>ディレクトリを追加...</translation>
     </message>
@@ -4705,6 +4709,10 @@ If there are no matches then it will use the largest image in the directory.</so
     <message>
       <source>Enable delete files in the right click context menu</source>
       <translation>右クリックメニューでの削除を有効化</translation>
+    </message>
+    <message>
+      <source>Remove duplicates when adding tracks to the playlist</source>
+      <translation type="unfinished">Remove duplicates when adding tracks to the playlist</translation>
     </message>
     <message>
       <source>Automatically sort playlist when inserting songs</source>

@@ -142,7 +142,7 @@ class ApplicationImpl {
           app->MoveToThread(playlist_backend, database_->thread());
           return playlist_backend;
         }),
-        playlist_manager_([app]() { return new PlaylistManager(app->task_manager(), app->tagreader_client(), app->url_handlers(), app->playlist_backend(), app->collection_backend(), app->current_albumcover_loader()); }),
+        playlist_manager_([app]() { return new PlaylistManager(app->task_manager(), app->tagreader_client(), app->url_handlers(), app->playlist_backend(), app->collection_backend(), app->current_albumcover_loader(), REMOVE_DUPLICATES_DEFAULT); }),
         cover_providers_([app]() {
           CoverProviders *cover_providers = new CoverProviders();
           // Initialize the repository of cover providers.
