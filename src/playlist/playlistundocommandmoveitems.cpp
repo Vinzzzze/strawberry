@@ -25,8 +25,9 @@
 PlaylistUndoCommandMoveItems::PlaylistUndoCommandMoveItems(Playlist *playlist, const QList<int> &source_rows, const int pos)
     : PlaylistUndoCommandBase(playlist),
       source_rows_(source_rows),
-      pos_(pos) {
+      pos_(playlist->get_real_pos(pos, source_rows[0])) {
 
+  playlist->update_list_to_move(source_rows_);
   setText(QObject::tr("move %n songs", "", static_cast<int>(source_rows.count())));
 
 }
