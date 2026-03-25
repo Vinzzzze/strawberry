@@ -151,7 +151,7 @@ void Player::ReloadSettings() {
   s.beginGroup(PlaylistSettings::kSettingsGroup);
   continue_on_error_ = s.value(PlaylistSettings::kContinueOnError, PlaylistSettings::kDefaultContinueOnError).toBool();
   greyout_ = s.value(PlaylistSettings::kGreyoutSongsPlay, PlaylistSettings::kDefaultGreyoutSongsPlay).toBool();
-  playlist_manager_->update_grouped_before_queue(s.value(PlaylistSettings::kGroupingBeforeQueue).toInt());
+  playlist_manager_->update_setting(s.value(PlaylistSettings::kGroupingBeforeQueue).toInt());
   s.endGroup();
 
   s.beginGroup(BehaviourSettings::kSettingsGroup);
