@@ -82,6 +82,7 @@ void SmartPlaylistSearchPreview::Init(const SharedPtr<Player> player,
                         QString(),
                         false,
                         playlist_manager->grouped_before_queue(),
+                        playlist_manager->remove_duplicates(),
                         0,
                         50,
                         this);

@@ -1167,6 +1167,10 @@ Pokud nenajde žádné, které by se shodovaly, potom použije největší obrá
       <translation>Povolit mazání souborů v kontextové nabídce pravého kliknutí</translation>
     </message>
     <message>
+      <source>Remove duplicates when adding tracks to the playlist</source>
+      <translation type="unfinished">Remove duplicates when adding tracks to the playlist</translation>
+    </message>
+    <message>
       <source>Add directory...</source>
       <translation>Přidat složku...</translation>
     </message>
@@ -4732,6 +4736,10 @@ Pokud nenajde žádné, které by se shodovaly, potom použije největší obrá
     <message>
       <source>Enable delete files in the right click context menu</source>
       <translation>Povolit mazání souborů v kontextové nabídce pravého kliknutí</translation>
+    </message>
+    <message>
+      <source>Remove duplicates when adding tracks to the playlist</source>
+      <translation type="unfinished">Remove duplicates when adding tracks to the playlist</translation>
     </message>
     <message>
       <source>Automatically sort playlist when inserting songs</source>

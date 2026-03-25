@@ -141,6 +141,7 @@ class EngineBase : public QObject {
   bool IsEqualizerEnabled() { return equalizer_enabled_; }
 
   inline int grouping_before_queue() const { return grouping_before_queue_; }
+  inline bool remove_duplicates() const { return remove_duplicates_; }
 
   static const int kScopeSize = 1024;
 
@@ -240,6 +241,7 @@ class EngineBase : public QObject {
 
   // Grouping
   int grouping_before_queue_;
+  bool remove_duplicates_;
 
   // Options
   bool bs2b_enabled_;

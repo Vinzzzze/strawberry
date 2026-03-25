@@ -1167,6 +1167,10 @@ W przypadku braku takich plików użyty zostanie największy obraz z danego kata
       <translation>Włącz opcję&#xa0;usuwania plików w menu kontekstowym</translation>
     </message>
     <message>
+      <source>Remove duplicates when adding tracks to the playlist</source>
+      <translation type="unfinished">Remove duplicates when adding tracks to the playlist</translation>
+    </message>
+    <message>
       <source>Add directory...</source>
       <translation>Dodaj katalog…</translation>
     </message>
@@ -4734,6 +4738,10 @@ tekstu zostanie ukryty.&lt;/p&gt;</translation>
     <message>
       <source>Enable delete files in the right click context menu</source>
       <translation>Włącz opcję&#xa0;usuwania plików w menu kontekstowym</translation>
+    </message>
+    <message>
+      <source>Remove duplicates when adding tracks to the playlist</source>
+      <translation type="unfinished">Remove duplicates when adding tracks to the playlist</translation>
     </message>
     <message>
       <source>Automatically sort playlist when inserting songs</source>

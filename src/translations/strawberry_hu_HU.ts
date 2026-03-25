@@ -1167,6 +1167,10 @@ Ha nincs egyezés, akkor a legnagyobb képet veszi a könyvtárból.</translatio
       <translation>Fájlok törlésének engedélyezése a jobb-kattintásos menüből</translation>
     </message>
     <message>
+      <source>Remove duplicates when adding tracks to the playlist</source>
+      <translation type="unfinished">Remove duplicates when adding tracks to the playlist</translation>
+    </message>
+    <message>
       <source>Add directory...</source>
       <translation>Könyvtár hozzáadása…</translation>
     </message>
@@ -4730,6 +4734,10 @@ Ha nincs egyezés, akkor a legnagyobb képet veszi a könyvtárból.</translatio
     <message>
       <source>Enable delete files in the right click context menu</source>
       <translation>Fájlok törlésének engedélyezése a jobb-kattintásos menüből</translation>
+    </message>
+    <message>
+      <source>Remove duplicates when adding tracks to the playlist</source>
+      <translation type="unfinished">Remove duplicates when adding tracks to the playlist</translation>
     </message>
     <message>
       <source>Automatically sort playlist when inserting songs</source>

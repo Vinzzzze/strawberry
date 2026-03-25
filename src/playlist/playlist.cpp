@@ -133,6 +133,7 @@ Playlist::Playlist(const SharedPtr<TaskManager> task_manager,
                    const QString &special_type,
                    const bool favorite,
                    const int grouped_before_queue,
+                   const bool remove_duplicates,
                    const int half_playing_time_s,
                    const int percent_interest_song,
                    QObject *parent)
@@ -162,6 +163,7 @@ Playlist::Playlist(const SharedPtr<TaskManager> task_manager,
       sort_order_(Qt::AscendingOrder),
       half_playing_time_s_(half_playing_time_s),
       percent_interest_song_(percent_interest_song),
+      remove_duplicates_(remove_duplicates),
       left_grouped_song_before_queue_(grouped_before_queue),
       init_grouped_song_before_queue_(grouped_before_queue),
       next_song_after_queued_(-1) {
@@ -204,6 +206,10 @@ void Playlist::InsertSongItems(const SongList &songs, const int pos, const bool 
   items.reserve(songs.count());
   for (const Song &song : songs) {
     items << make_shared<T>(song);
+  }
+
+  if (remove_duplicates_) {
+    RemoveDuplicateSongs(items);
   }
 
   InsertItems(items, pos, play_now, enqueue, enqueue_next);
@@ -1062,6 +1068,114 @@ void Playlist::TurnOnDynamicPlaylist(PlaylistGeneratorPtr gen) {
 
 }
 
+int Playlist::get_real_pos(int pos, const int origin) {
+  const int length = static_cast<int>(items_.count());
+
+  if (pos > 0 && pos < length) {
+    int left_grouped_song = init_grouped_song_before_queue_;
+    Song song_a = item_at(pos - 1)->EffectiveMetadata();
+    Song song_b = item_at(pos)->EffectiveMetadata();
+    Song* prev_song = &song_a;
+    Song* next_song = &song_b;
+
+    if (pos < origin) {
+      // Loop to find the previous song that does not belongs to the group
+      while (   prev_song->IsOnSameGrouping(*next_song)
+             && (   left_grouped_song == 0
+                 || --left_grouped_song > 0   )   ) {
+        if (--pos <= 0) {
+          break;
+        }
+        Song* temp = next_song;
+
+        next_song = prev_song;
+        *(prev_song = temp) = item_at(pos - 1)->EffectiveMetadata();
+      }
+    }
+    else {
+      // Loop to find the next song that does not belongs to the group
+      while (   prev_song->IsOnSameGrouping(*next_song)
+             && (   left_grouped_song == 0
+                 || --left_grouped_song > 0   )   ) {
+        if (++pos >= length) {
+          break;
+        }
+        Song* temp = prev_song;
+
+        prev_song = next_song;
+        *(next_song = temp) = item_at(pos)->EffectiveMetadata();
+      }
+    }
+  }
+  return pos;
+}
+
+void Playlist::update_list_to_move(QList<int> &list) {
+  if (init_grouped_song_before_queue_ == 0) {
+    Song song_a;
+    Song song_b;
+    Song* prev_song = &song_a;
+    Song* next_song = &song_b;
+    const int length = static_cast<int>(items_.count());
+
+    for (int idx_index_track = 0; idx_index_track < list.size(); ++idx_index_track) {
+      int current_idx_track = list[idx_index_track];
+      int offset_index_track = 0;
+
+      if (current_idx_track > 0) {
+        *prev_song = item_at(current_idx_track - 1)->EffectiveMetadata();
+        *next_song = item_at(current_idx_track)->EffectiveMetadata();
+
+        while (prev_song->IsOnSameGrouping(*next_song)) {
+          list.insert(idx_index_track, --current_idx_track);
+          ++offset_index_track;
+
+          if (current_idx_track <= 0) {
+            break;
+          }
+          Song* temp = next_song;
+
+          next_song = prev_song;
+          *(prev_song = temp) = item_at(current_idx_track - 1)->EffectiveMetadata();
+        }
+
+        current_idx_track += offset_index_track;
+        idx_index_track += offset_index_track;
+      }
+
+      int idx_length = static_cast<int>(list.count()) - 1;
+
+      while (   idx_index_track < idx_length
+             && list[idx_index_track + 1] == current_idx_track + 1   ) {
+        ++idx_index_track;
+        ++current_idx_track;
+      }
+      if (current_idx_track < length - 1) {
+        *prev_song = item_at(current_idx_track)->EffectiveMetadata();
+        *next_song = item_at(current_idx_track + 1)->EffectiveMetadata();
+
+        while (prev_song->IsOnSameGrouping(*next_song)) {
+          ++current_idx_track;
+
+          if (idx_index_track >= idx_length || list[idx_index_track + 1] != current_idx_track) {
+            list.insert(idx_index_track + 1, current_idx_track);
+            ++idx_length;
+          }
+          ++idx_index_track;
+
+          if (current_idx_track >= length - 1) {
+            break;
+          }
+          Song* temp = prev_song;
+
+          prev_song = next_song;
+          *(next_song = temp) = item_at(current_idx_track + 1)->EffectiveMetadata();
+        }
+      }
+    }
+  }
+}
+
 void Playlist::MoveItemWithoutUndo(const int source, const int dest) {
   MoveItemsWithoutUndo(QList<int>() << source, dest);
 }
@@ -1217,15 +1331,37 @@ void Playlist::InsertItems(const PlaylistItemPtrList &itemsIn, const int pos, co
 
   PlaylistItemPtrList items = itemsIn;
 
-  const int start = pos == -1 ? static_cast<int>(items_.count()) : pos;
+  const int length = static_cast<int>(items_.count());
+  int start = pos == -1 ? length : pos;
+  int used_pos = start;
 
+  if (used_pos > 0 && used_pos < length) {
+    int left_grouped_song = init_grouped_song_before_queue_;
+    Song song_a = item_at(used_pos - 1)->EffectiveMetadata();
+    Song song_b = item_at(used_pos)->EffectiveMetadata();
+    Song* prev_song = &song_a;
+    Song* next_song = &song_b;
+
+    // Loop to find the next song that does not belongs to the group
+    while (   prev_song->IsOnSameGrouping(*next_song)
+           && (   left_grouped_song == 0
+               || --left_grouped_song > 0   )   ) {
+      if (++used_pos >= length) {
+        break;
+      }
+      Song* temp = prev_song;
+
+      prev_song = next_song;
+      *(next_song = temp) = item_at(used_pos)->EffectiveMetadata();
+    }
+  }
   if (items.count() > kUndoItemLimit) {
     // Too big to keep in the undo stack. Also clear the stack because it might have been invalidated.
-    InsertItemsWithoutUndo(items, pos, enqueue, enqueue_next);
+    InsertItemsWithoutUndo(items, used_pos, enqueue, enqueue_next);
     undo_stack_->clear();
   }
   else {
-    undo_stack_->push(new PlaylistUndoCommandInsertItems(this, items, pos, enqueue, enqueue_next));
+    undo_stack_->push(new PlaylistUndoCommandInsertItems(this, items, used_pos, enqueue, enqueue_next));
   }
 
   if (play_now) Q_EMIT PlayRequested(index(start, 0), AutoScroll::Maybe);
@@ -1828,7 +1964,7 @@ bool Playlist::removeRows(const int row, const int count, const QModelIndex &par
 
 }
 
-bool Playlist::removeRows(QList<int> &rows) {
+bool Playlist::removeRows(QList<int> &rows, PlaylistItemPtrList &items) {
 
   if (rows.isEmpty()) {
     return false;
@@ -1846,7 +1982,11 @@ bool Playlist::removeRows(QList<int> &rows) {
     }
 
     // And now we're removing the current sequence
-    if (!removeRows(part.last(), static_cast<int>(part.size()))) {
+    if (std::addressof(items) != std::addressof(items_)) {
+      // I want to clean a list to be added to the current playlist, I call a specific function for that
+      items.remove(part.last(), part.size());
+    }
+    else if (!removeRows(part.last(), static_cast<int>(part.size()))) {
       return false;
     }
 
@@ -2666,13 +2806,13 @@ struct SongSimilarEqual {
 
 }  // namespace
 
-void Playlist::RemoveDuplicateSongs() {
+void Playlist::RemoveDuplicateSongs(PlaylistItemPtrList &items) {
 
   QList<int> rows_to_remove;
   std::unordered_map<Song, int, SongSimilarHash, SongSimilarEqual> unique_songs;
 
-  for (int row = 0; row < items_.count(); ++row) {
-    const PlaylistItemPtr item = items_.value(row);
+  for (int row = 0; row < items.count(); ++row) {
+    const PlaylistItemPtr item = items.value(row);
     const Song &song = item->EffectiveMetadata();
 
     bool found_duplicate = false;
@@ -2697,7 +2837,7 @@ void Playlist::RemoveDuplicateSongs() {
     }
   }
 
-  removeRows(rows_to_remove);
+  removeRows(rows_to_remove, items);
 
 }
 

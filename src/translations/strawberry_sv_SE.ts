@@ -1167,6 +1167,10 @@ Om det inte finns några matchningar så kommer den största bilden i mappen att
       <translation>Aktivera att ta bort filer i högerklickssnabbmenyn</translation>
     </message>
     <message>
+      <source>Remove duplicates when adding tracks to the playlist</source>
+      <translation type="unfinished">Remove duplicates when adding tracks to the playlist</translation>
+    </message>
+    <message>
       <source>Add directory...</source>
       <translation>Lägg till mapp...</translation>
     </message>
@@ -4730,6 +4734,10 @@ Om det inte finns några matchningar så kommer den största bilden i mappen att
     <message>
       <source>Enable delete files in the right click context menu</source>
       <translation>Aktivera att ta bort filer i högerklickssnabbmenyn</translation>
+    </message>
+    <message>
+      <source>Remove duplicates when adding tracks to the playlist</source>
+      <translation type="unfinished">Remove duplicates when adding tracks to the playlist</translation>
     </message>
     <message>
       <source>Automatically sort playlist when inserting songs</source>

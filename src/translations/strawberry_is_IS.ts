@@ -1167,6 +1167,10 @@ Ef engar samsvaranir finnast, verður notast víð stærstu myndina í möppunni
       <translation>Virkja að eyða skrám í hægrismells-samhengisvalmynd</translation>
     </message>
     <message>
+      <source>Remove duplicates when adding tracks to the playlist</source>
+      <translation type="unfinished">Remove duplicates when adding tracks to the playlist</translation>
+    </message>
+    <message>
       <source>Add directory...</source>
       <translation>Bæta við möppu...</translation>
     </message>
@@ -4730,6 +4734,10 @@ Ef engar samsvaranir finnast, verður notast víð stærstu myndina í möppunni
     <message>
       <source>Enable delete files in the right click context menu</source>
       <translation>Virkja að eyða skrám í hægrismells-samhengisvalmynd</translation>
+    </message>
+    <message>
+      <source>Remove duplicates when adding tracks to the playlist</source>
+      <translation type="unfinished">Remove duplicates when adding tracks to the playlist</translation>
     </message>
     <message>
       <source>Automatically sort playlist when inserting songs</source>

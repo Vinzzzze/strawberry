@@ -70,6 +70,7 @@ PlaylistManager::PlaylistManager(const SharedPtr<TaskManager> task_manager,
                                  const SharedPtr<CollectionBackend> collection_backend,
                                  const SharedPtr<CurrentAlbumCoverLoader> current_albumcover_loader,
                                  const int grouped_before_queue,
+                                 const bool remove_duplicates,
                                  QObject *parent)
     : PlaylistManagerInterface(parent),
       task_manager_(task_manager),
@@ -84,7 +85,8 @@ PlaylistManager::PlaylistManager(const SharedPtr<TaskManager> task_manager,
       current_(-1),
       active_(-1),
       playlists_loading_(0),
-      grouped_before_queue_(grouped_before_queue) {
+      grouped_before_queue_(grouped_before_queue),
+      remove_duplicates_(remove_duplicates) {
 
   setObjectName(QLatin1String(QObject::metaObject()->className()));
 
@@ -97,12 +99,13 @@ PlaylistManager::~PlaylistManager() {
 
 }
 
-void PlaylistManager::update_grouped_before_queue(const int grouped_before_queue) {
+void PlaylistManager::update_setting(const int grouped_before_queue, const bool remove_duplicates) {
   grouped_before_queue_ = grouped_before_queue;
+  remove_duplicates_ = remove_duplicates;
 
   QList<Data> datas = playlists_.values();
   for (Data &data : datas) {
-    data.p->update_grouped_before_queue(grouped_before_queue);
+    data.p->update_setting(grouped_before_queue, remove_duplicates);
   }
 }
 
@@ -175,6 +178,7 @@ Playlist *PlaylistManager::AddPlaylist(const int id, const QString &name, const 
                                special_type,
                                favorite,
                                grouped_before_queue_,
+                               remove_duplicates_,
                                half_playing_time_s,
                                percent_interest_song);
   ret->set_sequence(sequence_);
