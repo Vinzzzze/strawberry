@@ -199,7 +199,9 @@ class Playlist : public QAbstractListModel {
   int next_row(const bool ignore_repeat_track = false, const bool no_grouping_track_count = true);
   int previous_row(const bool ignore_repeat_track = false);
 
-  void update_grouped_before_queue(const int grouped_before_queue) { init_grouped_song_before_queue_ = grouped_before_queue; }
+  void update_setting(const int grouped_before_queue) {
+    init_grouped_song_before_queue_ = grouped_before_queue;
+  }
 
   QModelIndex current_index() const;
 
@@ -254,6 +256,12 @@ class Playlist : public QAbstractListModel {
   // song will be reloaded to even out the situation because obviously something has changed.
   // This returns true if this playlist had current item when the method was invoked.
   bool ApplyValidityOnCurrentSong(const QUrl &url, bool valid);
+
+  // Get the real position for skipping the grouped tracks
+  int get_real_pos(int pos, const int origin);
+
+  // Update the list of the tracks moved
+  void update_list_to_move(QList<int> &list);
 
   // Removes from the playlist all local files that don't exist anymore.
   void RemoveDeletedSongs();
