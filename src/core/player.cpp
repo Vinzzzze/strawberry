@@ -152,7 +152,7 @@ void Player::ReloadSettings() {
   s.beginGroup(PlaylistSettings::kSettingsGroup);
   continue_on_error_ = s.value("continue_on_error", false).toBool();
   greyout_ = s.value("greyout_songs_play", true).toBool();
-  playlist_manager_->update_setting(s.value(PlaylistSettings::kGroupingBeforeQueue).toInt());
+  playlist_manager_->update_setting(s.value(PlaylistSettings::kGroupingBeforeQueue, GROUPED_BEFORE_QUEUE_DEFAULT).toInt(), s.value(PlaylistSettings::kRemoveDuplicates, REMOVE_DUPLICATES_DEFAULT).toBool());
   s.endGroup();
 
   s.beginGroup(BehaviourSettings::kSettingsGroup);
