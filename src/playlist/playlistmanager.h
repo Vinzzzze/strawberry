@@ -59,6 +59,7 @@ class PlaylistManager : public PlaylistManagerInterface {
                            const SharedPtr<PlaylistBackend> playlist_backend,
                            const SharedPtr<CollectionBackend> collection_backend,
                            const SharedPtr<CurrentAlbumCoverLoader> current_albumcover_loader,
+                           const int grouped_before_queue,
                            QObject *parent = nullptr);
 
   ~PlaylistManager() override;
@@ -71,6 +72,10 @@ class PlaylistManager : public PlaylistManagerInterface {
   Playlist *playlist(const int id) const override { return playlists_[id].p; }
   Playlist *current() const override { return playlist(current_id()); }
   Playlist *active() const override { return playlist(active_id()); }
+  int grouped_before_queue() const { return grouped_before_queue_; }
+
+  // Update the grouped before queue value : we have to do more than just update the attribute
+  void update_setting(const int grouped_before_queue);
 
   // Returns the collection of playlists managed by this PlaylistManager.
   QList<Playlist*> GetAllPlaylists() const override;
@@ -179,6 +184,7 @@ class PlaylistManager : public PlaylistManagerInterface {
   int current_;
   int active_;
   int playlists_loading_;
+  int grouped_before_queue_;
 };
 
 #endif  // PLAYLISTMANAGER_H

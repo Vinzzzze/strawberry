@@ -75,6 +75,9 @@ using ColumnAlignmentMap = QMap<int, Qt::Alignment>;
 Q_DECLARE_METATYPE(Qt::Alignment)
 Q_DECLARE_METATYPE(ColumnAlignmentMap)
 
+// This default value keep the current behavior : the queued item is played at the end of the current track, even a grouped one
+static constexpr int GROUPED_BEFORE_QUEUE_DEFAULT = 1;
+
 class Playlist : public QAbstractListModel {
   Q_OBJECT
 
@@ -92,6 +95,7 @@ class Playlist : public QAbstractListModel {
                     const int id,
                     const QString &special_type = QString(),
                     const bool favorite = false,
+                    const int grouped_before_queue = GROUPED_BEFORE_QUEUE_DEFAULT,
                     QObject *parent = nullptr);
 
   ~Playlist() override;
@@ -192,9 +196,13 @@ class Playlist : public QAbstractListModel {
   int last_played_row() const;
   void reset_last_played() { last_played_item_index_ = QPersistentModelIndex(); }
   void reset_played_indexes() { played_indexes_.clear(); }
-  int next_row(const bool ignore_repeat_track = false);
+  int next_row(const bool ignore_repeat_track = false, const bool no_grouping_track_count = true);
   int previous_row(const bool ignore_repeat_track = false);
   const QList<int>& virtual_items() const { return virtual_items_; }
+
+  void update_setting(const int grouped_before_queue) {
+    init_grouped_song_before_queue_ = grouped_before_queue;
+  }
 
   QModelIndex current_index() const;
 
@@ -251,6 +259,12 @@ class Playlist : public QAbstractListModel {
   // This returns true if this playlist had current item when the method was invoked.
   bool ApplyValidityOnCurrentSong(const QUrl &url, bool valid);
 
+  // Get the real position for skipping the grouped tracks
+  int get_real_pos(int pos, const int origin);
+
+  // Update the list of the tracks moved
+  void update_list_to_move(QList<int> &list);
+
   // Removes from the playlist all local files that don't exist anymore.
   void RemoveDeletedSongs();
 
@@ -286,6 +300,9 @@ class Playlist : public QAbstractListModel {
   // Changes rating of a song to the given value asynchronously
   void RateSong(const QModelIndex &idx, const float rating);
   void RateSongs(const QModelIndexList &index_list, const float rating);
+
+  // Clean the queued song
+  void CleanNextSongQueued() { next_song_after_queued_ = -1; }
 
   void set_auto_sort(const bool auto_sort) { auto_sort_ = auto_sort; }
 
@@ -436,6 +453,11 @@ class Playlist : public QAbstractListModel {
   bool auto_sort_;
   Column sort_column_;
   Qt::SortOrder sort_order_;
+
+  // Variables to count the number of times the queue list had been ignored due to grouping values
+  int left_grouped_song_before_queue_;
+  int init_grouped_song_before_queue_;
+  int next_song_after_queued_;
 };
 
 #endif  // PLAYLIST_H

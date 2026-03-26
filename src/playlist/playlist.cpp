@@ -132,6 +132,7 @@ Playlist::Playlist(const SharedPtr<TaskManager> task_manager,
                    const int id,
                    const QString &special_type,
                    const bool favorite,
+                   const int grouped_before_queue,
                    QObject *parent)
     : QAbstractListModel(parent),
       is_loading_(false),
@@ -156,7 +157,10 @@ Playlist::Playlist(const SharedPtr<TaskManager> task_manager,
       scrobble_point_(-1),
       auto_sort_(false),
       sort_column_(Column::Title),
-      sort_order_(Qt::AscendingOrder) {
+      sort_order_(Qt::AscendingOrder),
+      left_grouped_song_before_queue_(grouped_before_queue),
+      init_grouped_song_before_queue_(grouped_before_queue),
+      next_song_after_queued_(-1) {
 
   undo_stack_->setUndoLimit(kUndoStackSize);
 
@@ -647,14 +651,73 @@ int Playlist::PreviousVirtualIndex(int i, const bool ignore_repeat_track) const 
 
 }
 
-int Playlist::next_row(const bool ignore_repeat_track) {
+int Playlist::next_row(const bool ignore_repeat_track, const bool no_grouping_track_count) {
 
-  // Any queued items take priority
-  if (!queue_->is_empty()) {
+  int next_virtual_index = next_song_after_queued_;
+
+  if (next_virtual_index < 0) {
+    next_virtual_index = NextVirtualIndex(current_virtual_index_,
+                                          ignore_repeat_track);
+    switch (RepeatMode()) {
+      default:
+
+        // Compare with unsigned int to avoid to check if it is less than the count but positive
+        if (   static_cast<unsigned int>(current_virtual_index_) < static_cast<unsigned int>(virtual_items_.count())
+            && static_cast<unsigned int>(next_virtual_index) < static_cast<unsigned int>(virtual_items_.count())   ) {
+           // The two indexes are in the virtual items array
+           Song this_song = item_at(virtual_items_[current_virtual_index_])->EffectiveMetadata();
+           Song next_song = item_at(virtual_items_[next_virtual_index])->EffectiveMetadata();
+
+           if (   this_song.IsOnSameGrouping(next_song)
+               && (   left_grouped_song_before_queue_ == 0
+                   || no_grouping_track_count
+                   || --left_grouped_song_before_queue_ > 0   )   ) {
+              // We have two choices here :
+              // either resetting left_grouped_song_before_queue_ as soon as there is no queued song,
+              // that is too say, when a song will be queued, you will have to wait the setted number of grouped song before playing it
+              // either resetting left_grouped_song_before_queue_ when it reaches 0,
+              // that is too say, when a song will be queued, you will have to wait every n th grouped song before playing it
+              if (queue_->is_empty())
+              // if (left_grouped_song_before_queue_ == 0)
+              {
+                left_grouped_song_before_queue_ = init_grouped_song_before_queue_;
+              }
+              // The next song is on the same grouping than the current one,
+              // it cannot be interrupt by the queued items
+              break;
+           }
+        }
+
+        [[fallthrough]];
+
+      case PlaylistSequence::RepeatMode::Intro:
+      case PlaylistSequence::RepeatMode::Track:
+
+        // Reset the grouping values
+        left_grouped_song_before_queue_ = init_grouped_song_before_queue_;
+
+        // Any queued items take priority
+        if (!queue_->is_empty()) {
+          // Remember the location in the current playlist to go back right there after the queued play
+          next_song_after_queued_ = next_virtual_index;
+
+          // Play the queued song
+          return queue_->PeekNext();
+        }
+
+        break;
+    }
+  }
+  else if (!queue_->is_empty()) {
+    // We already remember the location where we want to go back after the queued play
+    // we just have to return the next queued song
     return queue_->PeekNext();
   }
+  else if (next_song_after_queued_ >= 0 && !no_grouping_track_count) {
+     // No more queued song, go back to the list to play
+     next_song_after_queued_ = -1;
+  }
 
-  int next_virtual_index = NextVirtualIndex(current_virtual_index_, ignore_repeat_track);
   if (next_virtual_index >= virtual_items_.count()) {
     // We've gone off the end of the playlist.
 
@@ -682,12 +745,16 @@ int Playlist::next_row(const bool ignore_repeat_track) {
 
 int Playlist::previous_row(const bool ignore_repeat_track) {
 
-  while (!played_indexes_.isEmpty()) {
-    const QPersistentModelIndex idx = played_indexes_.takeLast();
-    if (idx.isValid() && idx != current_item_index_) return idx.row();
-  }
+  // I remove the code that was resetting the played_indexes_ each time a song was moving to another.
+  // Instead, I use the position in the current playlist, and I use the attribute added to keep 
+  // the position in the playlist when playing queued songs next_song_after_queued_ to be always
+  // at the right position in the playlist for a moderate cost.
+  int prev_virtual_index = next_song_after_queued_;
 
-  int prev_virtual_index = PreviousVirtualIndex(current_virtual_index_, ignore_repeat_track);
+  if (prev_virtual_index < 0) {
+    prev_virtual_index = current_virtual_index_;
+  }
+  prev_virtual_index = PreviousVirtualIndex(prev_virtual_index, ignore_repeat_track);
   if (prev_virtual_index < 0) {
     // We've gone off the beginning of the playlist.
 
@@ -993,6 +1060,114 @@ void Playlist::TurnOnDynamicPlaylist(PlaylistGeneratorPtr gen) {
 
 }
 
+int Playlist::get_real_pos(int pos, const int origin) {
+  const int length = static_cast<int>(items_.count());
+
+  if (pos > 0 && pos < length) {
+    int left_grouped_song = init_grouped_song_before_queue_;
+    Song song_a = item_at(pos - 1)->EffectiveMetadata();
+    Song song_b = item_at(pos)->EffectiveMetadata();
+    Song* prev_song = &song_a;
+    Song* next_song = &song_b;
+
+    if (pos < origin) {
+      // Loop to find the previous song that does not belongs to the group
+      while (   prev_song->IsOnSameGrouping(*next_song)
+             && (   left_grouped_song == 0
+                 || --left_grouped_song > 0   )   ) {
+        if (--pos <= 0) {
+          break;
+        }
+        Song* temp = next_song;
+
+        next_song = prev_song;
+        *(prev_song = temp) = item_at(pos - 1)->EffectiveMetadata();
+      }
+    }
+    else {
+      // Loop to find the next song that does not belongs to the group
+      while (   prev_song->IsOnSameGrouping(*next_song)
+             && (   left_grouped_song == 0
+                 || --left_grouped_song > 0   )   ) {
+        if (++pos >= length) {
+          break;
+        }
+        Song* temp = prev_song;
+
+        prev_song = next_song;
+        *(next_song = temp) = item_at(pos)->EffectiveMetadata();
+      }
+    }
+  }
+  return pos;
+}
+
+void Playlist::update_list_to_move(QList<int> &list) {
+  if (init_grouped_song_before_queue_ == 0) {
+    Song song_a;
+    Song song_b;
+    Song* prev_song = &song_a;
+    Song* next_song = &song_b;
+    const int length = static_cast<int>(items_.count());
+
+    for (int idx_index_track = 0; idx_index_track < list.size(); ++idx_index_track) {
+      int current_idx_track = list[idx_index_track];
+      int offset_index_track = 0;
+
+      if (current_idx_track > 0) {
+        *prev_song = item_at(current_idx_track - 1)->EffectiveMetadata();
+        *next_song = item_at(current_idx_track)->EffectiveMetadata();
+
+        while (prev_song->IsOnSameGrouping(*next_song)) {
+          list.insert(idx_index_track, --current_idx_track);
+          ++offset_index_track;
+
+          if (current_idx_track <= 0) {
+            break;
+          }
+          Song* temp = next_song;
+
+          next_song = prev_song;
+          *(prev_song = temp) = item_at(current_idx_track - 1)->EffectiveMetadata();
+        }
+
+        current_idx_track += offset_index_track;
+        idx_index_track += offset_index_track;
+      }
+
+      int idx_length = static_cast<int>(list.count()) - 1;
+
+      while (   idx_index_track < idx_length
+             && list[idx_index_track + 1] == current_idx_track + 1   ) {
+        ++idx_index_track;
+        ++current_idx_track;
+      }
+      if (current_idx_track < length - 1) {
+        *prev_song = item_at(current_idx_track)->EffectiveMetadata();
+        *next_song = item_at(current_idx_track + 1)->EffectiveMetadata();
+
+        while (prev_song->IsOnSameGrouping(*next_song)) {
+          ++current_idx_track;
+
+          if (idx_index_track >= idx_length || list[idx_index_track + 1] != current_idx_track) {
+            list.insert(idx_index_track + 1, current_idx_track);
+            ++idx_length;
+          }
+          ++idx_index_track;
+
+          if (current_idx_track >= length - 1) {
+            break;
+          }
+          Song* temp = prev_song;
+
+          prev_song = next_song;
+          *(next_song = temp) = item_at(current_idx_track + 1)->EffectiveMetadata();
+        }
+      }
+    }
+  }
+}
+
 void Playlist::MoveItemWithoutUndo(const int source, const int dest) {
   MoveItemsWithoutUndo(QList<int>() << source, dest);
 }
@@ -1148,15 +1323,37 @@ void Playlist::InsertItems(const PlaylistItemPtrList &itemsIn, const int pos, co
 
   PlaylistItemPtrList items = itemsIn;
 
-  const int start = pos == -1 ? static_cast<int>(items_.count()) : pos;
+  const int length = static_cast<int>(items_.count());
+  int start = pos == -1 ? length : pos;
+  int used_pos = start;
 
+  if (used_pos > 0 && used_pos < length) {
+    int left_grouped_song = init_grouped_song_before_queue_;
+    Song song_a = item_at(used_pos - 1)->EffectiveMetadata();
+    Song song_b = item_at(used_pos)->EffectiveMetadata();
+    Song* prev_song = &song_a;
+    Song* next_song = &song_b;
+
+    // Loop to find the next song that does not belongs to the group
+    while (   prev_song->IsOnSameGrouping(*next_song)
+           && (   left_grouped_song == 0
+               || --left_grouped_song > 0   )   ) {
+      if (++used_pos >= length) {
+        break;
+      }
+      Song* temp = prev_song;
+
+      prev_song = next_song;
+      *(next_song = temp) = item_at(used_pos)->EffectiveMetadata();
+    }
+  }
   if (items.count() > kUndoItemLimit) {
     // Too big to keep in the undo stack. Also clear the stack because it might have been invalidated.
-    InsertItemsWithoutUndo(items, pos, enqueue, enqueue_next);
+    InsertItemsWithoutUndo(items, used_pos, enqueue, enqueue_next);
     undo_stack_->clear();
   }
   else {
-    undo_stack_->push(new PlaylistUndoCommandInsertItems(this, items, pos, enqueue, enqueue_next));
+    undo_stack_->push(new PlaylistUndoCommandInsertItems(this, items, used_pos, enqueue, enqueue_next));
   }
 
   if (play_now) Q_EMIT PlayRequested(index(start, 0), AutoScroll::Maybe);
@@ -2034,6 +2231,10 @@ bool AlbumShuffleComparator(const QHash<QString, int> &album_key_positions, cons
 void Playlist::ReshuffleIndices() {
 
   const PlaylistSequence::ShuffleMode shuffle_mode = ShuffleMode();
+
+  // First, cancel the replay position
+  next_song_after_queued_ = -1;
+
   switch (shuffle_mode) {
     case PlaylistSequence::ShuffleMode::Off:{
       // No shuffling - sort the virtual item list normally.

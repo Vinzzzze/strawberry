@@ -78,6 +78,7 @@ EngineBase::EngineBase(QObject *parent)
       proxy_authentication_(false),
       channels_enabled_(false),
       channels_(0),
+      grouping_before_queue_(1),
       bs2b_enabled_(false),
       http2_enabled_(true),
       strict_ssl_enabled_(false),
@@ -188,6 +189,8 @@ void EngineBase::ReloadSettings() {
   fadeout_duration_nanosec_ = (fadeout_duration_ * kNsecPerMsec);
   fadeout_pause_duration_ = s.value(BackendSettings::kFadeoutPauseDuration, 250).toLongLong();
   fadeout_pause_duration_nanosec_ = (fadeout_pause_duration_ * kNsecPerMsec);
+
+  grouping_before_queue_ = s.value(BackendSettings::kGroupingBeforeQueue, 1).toInt();
 
   bs2b_enabled_ = s.value(BackendSettings::kBS2B, false).toBool();
 

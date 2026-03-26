@@ -107,6 +107,7 @@ Player::Player(const SharedPtr<TaskManager> task_manager, const SharedPtr<UrlHan
 
   QObject::connect(&*url_handlers, &UrlHandlers::Registered, this, &Player::UrlHandlerRegistered);
 
+  playlist_manager_->update_setting(engine_->grouping_before_queue());
 }
 
 void Player::Init() {
@@ -161,6 +162,7 @@ void Player::ReloadSettings() {
 
   engine_->ReloadSettings();
 
+  playlist_manager_->update_setting(engine_->grouping_before_queue());
 }
 
 void Player::UrlHandlerRegistered(UrlHandler *url_handler) const {
@@ -435,7 +437,7 @@ void Player::NextItem(const EngineBase::TrackChangeFlags change, const Playlist:
   // Manual track changes override "Repeat track"
   const bool ignore_repeat_track = change & EngineBase::TrackChangeType::Manual;
 
-  int i = active_playlist->next_row(ignore_repeat_track);
+  int i = active_playlist->next_row(ignore_repeat_track, false);
   if (i == -1) {
     playlist_manager_->active()->set_current_row(i);
     playlist_manager_->active()->reset_last_played();
@@ -635,10 +637,12 @@ void Player::PreviousItem(const EngineBase::TrackChangeFlags change) {
   if (i == -1) {
     Stop();
     PlayAt(i, false, 0, change, Playlist::AutoScroll::Always, true);
+    playlist_manager_->active()->CleanNextSongQueued();
     return;
   }
 
   PlayAt(i, false, 0, change, Playlist::AutoScroll::Always, false);
+  playlist_manager_->active()->CleanNextSongQueued();
 
 }
 
