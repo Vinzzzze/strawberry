@@ -8,6 +8,11 @@
 			<arg direction='out' name='Metadata' type='aa{sv}' />
 			<annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="TrackMetadata" />
 		</method>
+		<method name='GetTracksMetadataString'>
+			<arg direction='in' name='TrackList' type='s' />
+			<arg direction='out' name='Metadata' type='aa{sv}' />
+			<annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="TrackMetadata" />
+		</method>
 		<method name='AddTrack'>
 			<arg direction='in' name='Uri' type='s' />
 			<arg direction='in' name='AfterTrack' type='o' />
@@ -15,6 +20,18 @@
 		</method>
 		<method name='RemoveTrack'>
 			<arg direction='in' name='TrackId' type='o' />
+		</method>
+		<method name='EnqueueTracks'>
+			<arg direction='in' name='InsertFirst' type='b' />
+			<arg direction='in' name='TrackIds' type='ao' />
+		</method>
+		<method name='EnqueueTracksString'>
+			<arg direction='in' name='InsertFirst' type='b' />
+			<arg direction='in' name='TrackList' type='s' />
+		</method>
+		<method name='EnqueueTracksFiltered'>
+			<arg direction='in' name='InsertFirst' type='b' />
+			<arg direction='in' name='Filtered' type='s' />
 		</method>
 		<method name='GoTo'>
 			<arg direction='in' name='TrackId' type='o' />
@@ -37,6 +54,21 @@
 			<annotation name="org.qtproject.QtDBus.QtTypeName.Out1" value="TrackMetadata" />
 		</signal>
 		<property name='Tracks' type='ao' access='read' />
+		<property name='LastPlayedTracks' type='ao' access='read' />
+		<method name='LastPlayedTracksString'>
+			<arg direction='out' name='Metadata' type='aa{sv}' />
+			<annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="TrackMetadata" />
+		</method>
+		<method name='FilteredTracks'>
+			<arg direction='in' name='Filter' type='s' />
+			<arg direction='out' name='Tracks' type='ao' />
+			<annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="Track_Ids" />
+		</method>
+		<method name='FilteredTracksString'>
+			<arg direction='in' name='Filter' type='s' />
+			<arg direction='out' name='Metadata' type='aa{sv}' />
+			<annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="TrackMetadata" />
+		</method>
 		<property name='CanEditTracks' type='b' access='read' />
 	</interface>
 </node>
