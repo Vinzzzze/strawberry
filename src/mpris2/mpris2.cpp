@@ -50,10 +50,13 @@
 #include "core/song.h"
 #include "core/player.h"
 #include "engine/enginebase.h"
+#include "filterparser/filterparser.h"
+#include "filterparser/filtertree.h"
 #include "playlist/playlist.h"
 #include "playlist/playlistitem.h"
 #include "playlist/playlistmanager.h"
 #include "playlist/playlistsequence.h"
+#include "queue/queue.h"
 #include "covermanager/currentalbumcoverloader.h"
 #include "covermanager/albumcoverloaderresult.h"
 
@@ -343,7 +346,7 @@ QString Mpris2::LoopStatus() const {
 
   switch (playlist_manager_->active() ? playlist_manager_->active()->RepeatMode() : playlist_manager_->sequence()->repeat_mode()) {
     case PlaylistSequence::RepeatMode::Off: return u"None"_s;
-    case PlaylistSequence::RepeatMode::Album:
+    case PlaylistSequence::RepeatMode::Album: return u"Album"_s;
     case PlaylistSequence::RepeatMode::Playlist: return u"Playlist"_s;
     case PlaylistSequence::RepeatMode::Track: return u"Track"_s;
     default: return u"None"_s;
@@ -366,6 +369,9 @@ void Mpris2::SetLoopStatus(const QString &value) {
   }
   else if (value == "Playlist"_L1) {
     mode = PlaylistSequence::RepeatMode::Playlist;
+  }
+  else if (value == "Album"_L1) {
+    mode = PlaylistSequence::RepeatMode::Album;
   }
 
   if (playlist_manager_->active()) {
@@ -412,6 +418,40 @@ void Mpris2::SetShuffle(bool enable) {
     playlist_manager_->sequence()->SetShuffleMode(mode);
   }
 
+}
+
+QString Mpris2::ShuffleValue() const {
+
+  const PlaylistSequence::ShuffleMode shuffle_mode = playlist_manager_->active() ? playlist_manager_->active()->ShuffleMode() : playlist_manager_->sequence()->shuffle_mode();
+
+  switch (shuffle_mode) {
+    case PlaylistSequence::ShuffleMode::Off: return u"Off"_s;
+    case PlaylistSequence::ShuffleMode::All: return u"All"_s;
+    case PlaylistSequence::ShuffleMode::InsideAlbum: return u"InsideAlbum"_s;
+    case PlaylistSequence::ShuffleMode::Albums: return u"Albums"_s;
+    case PlaylistSequence::ShuffleMode::Grouping: return u"Grouping"_s;
+    default: return u"None"_s;
+  }
+
+}
+
+void Mpris2::SetShuffleValue(const QString& value) {
+  PlaylistSequence::ShuffleMode mode = PlaylistSequence::ShuffleMode::Off;
+
+  if (value == "All"_L1) {
+    mode = PlaylistSequence::ShuffleMode::All;
+  }
+  else if (value == "InsideAlbum"_L1) {
+    mode = PlaylistSequence::ShuffleMode::InsideAlbum;
+  }
+  else if (value == "Albums"_L1) {
+    mode = PlaylistSequence::ShuffleMode::Albums;
+  }
+  else if (value == "Grouping"_L1) {
+    mode = PlaylistSequence::ShuffleMode::Grouping;
+  }
+
+  playlist_manager_->active()->sequence()->SetShuffleMode(mode);
 }
 
 QVariantMap Mpris2::Metadata() const { return last_metadata_; }
@@ -785,6 +825,205 @@ void Mpris2::GoTo(const QDBusObjectPath &trackId) {
 
   playlist_manager_->active()->set_current_row(playlist_row);
 
+}
+
+Track_Ids Mpris2::FilteredTracks(const QString& filter) const {
+  if (!filter.isEmpty()) {
+    Track_Ids       ret_value;
+    FilterParser    p(filter);
+    FilterTree*     filter_tree = p.parse();
+
+    if (filter_tree != nullptr) {
+      PlaylistItemPtr item;
+
+      for (auto&& current_id : playlist_manager_->active()->virtual_items()) {
+        if (   playlist_manager_->active()->has_item_at(current_id)
+            && (item = playlist_manager_->active()->item_at(current_id))
+            && filter_tree->accept(item->EffectiveMetadata())) {
+          ret_value.push_back(current_track_id(current_id));
+        }
+      }
+
+      delete filter_tree;
+
+      return ret_value;
+    }
+  }
+  return Tracks();
+}
+
+TrackMetadata Mpris2::FilteredTracksString(const QString& filter) const {
+  if (!filter.isEmpty()) {
+    TrackMetadata   ret_value;
+    FilterParser    p(filter);
+    FilterTree*     filter_tree = p.parse();
+
+    if (filter_tree != nullptr) {
+      PlaylistItemPtr item;
+
+      for (auto&& current_id : playlist_manager_->active()->virtual_items()) {
+        if (   playlist_manager_->active()->has_item_at(current_id)
+            && (item = playlist_manager_->active()->item_at(current_id))
+            && filter_tree->accept(item->EffectiveMetadata())) {
+          if (playlist_manager_->active()->has_item_at(current_id)) {
+            auto&& track_definition = playlist_manager_->active()->item_at(current_id);
+
+            if (!track_definition) {
+               continue;
+            }
+            QVariantMap track_map;
+            track_definition->EffectiveMetadata().ToXesam(&track_map);
+            ret_value.push_back(track_map);
+          }
+        }
+      }
+
+      delete filter_tree;
+
+      return ret_value;
+    }
+  }
+  return TrackMetadata();
+}
+
+Track_Ids Mpris2::LastPlayedTracks() const {
+  Track_Ids ret_value;
+
+  for (auto&& current_index : playlist_manager_->active()->played_indexes()) {
+    if (current_index.isValid()) {
+       ret_value.push_back(current_track_id(current_index.row()));
+    }
+  }
+  return ret_value;
+}
+
+TrackMetadata Mpris2::LastPlayedTracksString() const {
+  TrackMetadata ret_value;
+
+  for (auto&& current_index : playlist_manager_->active()->played_indexes()) {
+    if (current_index.isValid()) {
+      auto&& track_id = current_index.row();
+      if (playlist_manager_->active()->has_item_at(track_id)) {
+        auto&& track_definition = playlist_manager_->active()->item_at(track_id);
+
+        if (!track_definition) {
+           continue;
+        }
+        QVariantMap track_map;
+        track_definition->EffectiveMetadata().ToXesam(&track_map);
+        ret_value.push_back(track_map);
+      }
+    }
+  }
+  return ret_value;
+}
+
+TrackMetadata Mpris2::GetTracksMetadataString(const QString& trackList) const {
+  TrackMetadata ret_value;
+
+  if (trackList.isEmpty()) {
+    return ret_value;
+  }
+  QStringList tracks = trackList.split(u',');
+
+  for (auto&& current_track_id : tracks) {
+    bool ok = false;
+    int track_id = current_track_id.toInt(&ok);
+    if (!ok) {
+      continue;
+    }
+    if (playlist_manager_->active()->has_item_at(track_id)) {
+      auto&& track_definition = playlist_manager_->active()->item_at(track_id);
+
+      if (!track_definition) {
+         continue;
+      }
+      QVariantMap track_map;
+      track_definition->EffectiveMetadata().ToXesam(&track_map);
+      ret_value.push_back(track_map);
+    }
+  }
+  return ret_value;
+
+}
+
+void Mpris2::EnqueueTracks(bool insertFirst, const Track_Ids& tracks) {
+  QModelIndexList indexList;
+
+  for (auto&& current_track_id : tracks) {
+    QStringList split_path = current_track_id.path().split(u'/');
+
+    if (split_path.isEmpty()) {
+      return;
+    }
+    bool ok = false;
+    const int track_id = split_path.last().toInt(&ok);
+    if (!ok) {
+      return;
+    }
+
+    indexList.push_back(playlist_manager_->active()->index(track_id, 0));
+  }
+
+  if (insertFirst) {
+    playlist_manager_->active()->queue()->InsertFirst(indexList);
+  } else {
+    playlist_manager_->active()->queue()->ToggleTracks(indexList);
+  }
+}
+void Mpris2::EnqueueTracksString(bool insertFirst, const QString& trackList) {
+  QModelIndexList indexList;
+
+  if (trackList.isEmpty()) {
+    return;
+  }
+  QStringList tracks = trackList.split(u',');
+
+  for (auto&& current_track_id : tracks) {
+    bool ok = false;
+    const int track_id = current_track_id.toInt(&ok);
+    if (!ok) {
+      return;
+    }
+
+    indexList.push_back(playlist_manager_->active()->index(track_id, 0));
+  }
+
+  if (insertFirst) {
+    playlist_manager_->active()->queue()->InsertFirst(indexList);
+  } else {
+    playlist_manager_->active()->queue()->ToggleTracks(indexList);
+  }
+}
+
+void Mpris2::EnqueueTracksFiltered(bool insertFirst, const QString& filter) {
+  if (filter.isEmpty()) {
+    return;
+  }
+  QModelIndexList indexList;
+  Track_Ids       ret_value;
+  FilterParser    p(filter);
+  FilterTree*     filter_tree = p.parse();
+
+  if (filter_tree != nullptr) {
+    PlaylistItemPtr item;
+
+    for (auto&& current_id : playlist_manager_->active()->virtual_items()) {
+      if (   playlist_manager_->active()->has_item_at(current_id)
+          && (item = playlist_manager_->active()->item_at(current_id))
+          && filter_tree->accept(item->EffectiveMetadata())) {
+        indexList.push_back(playlist_manager_->active()->index(current_id, 0));
+      }
+    }
+
+    delete filter_tree;
+
+    if (insertFirst) {
+      playlist_manager_->active()->queue()->InsertFirst(indexList);
+    } else {
+      playlist_manager_->active()->queue()->ToggleTracks(indexList);
+    }
+  }
 }
 
 quint32 Mpris2::PlaylistCount() const {
