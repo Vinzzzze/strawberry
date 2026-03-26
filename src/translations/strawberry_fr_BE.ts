@@ -4416,6 +4416,10 @@ S&apos;il n&apos;en existe pas alors Strawberry utilisera la plus grande image d
       <source>No matches found.  Clear the search box to show the whole playlist again.</source>
       <translation>Aucune correspondance trouvée. Videz le champ de recherche pour afficher à nouveau la totalité de la liste de lecture.</translation>
     </message>
+    <message>
+      <source>Show the collection option</source>
+      <translation>Affiche les options de la playlist</translation>
+    </message>
   </context>
   <context>
     <name>PlaylistDelegateBase</name>
@@ -5330,6 +5334,14 @@ Are you sure you want to continue?</source>
     <message>
       <source>Obviously, if there are less grouped tracks to play than the given number, the queued tracks will be played as soon as the last grouped track is played.</source>
       <translation type="unfinished">Bien-sûr, s'il reste à lire moins de pistes groupées que le nombre saisi, les pistes de la file d'attente seront jouées dès la fin de la dernière piste du regroupement.</translation>
+    </message>
+    <message>
+      <source>The time played before and after the position time selected in seconds (0 for playing the complete track)</source>
+      <translation type="unfinished">Temps d'écoute avant et après le temps de référence sélectionné, en secondes (0 pour jouer la piste complète)</translation>
+    </message>
+    <message>
+      <source>The position time reference selected in percent of the track length</source>
+      <translation type="unfinished">Position du temps de référence sélectionné en pourcentage de la piste</translation>
     </message>
   </context>
   <context>

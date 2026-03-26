@@ -4423,6 +4423,10 @@ Non è stato possibile eliminare i seguenti file:</translation>
       <source>No matches found.  Clear the search box to show the whole playlist again.</source>
       <translation>Nessuna corrispondenza trovata.  Per visualizzare nuovamente la playlist completa svuota il campo di ricerca.</translation>
     </message>
+    <message>
+      <source>Show the collection option</source>
+      <translation type="unfinished">Show the collection option</translation>
+    </message>
   </context>
   <context>
     <name>PlaylistDelegateBase</name>
@@ -5337,6 +5341,14 @@ Sei sicuro di voler continuare?</translation>
     <message>
       <source>Obviously, if there are less grouped tracks to play than the given number, the queued tracks will be played as soon as the last grouped track is played.</source>
       <translation type="unfinished"></translation>
+    </message>
+    <message>
+      <source>The time played before and after the position time selected in seconds (0 for playing the complete track)</source>
+      <translation type="unfinished">The time played before and after the position time selected in seconds (0 for playing the complete track)</translation>
+    </message>
+    <message>
+      <source>The position time reference selected in percent of the track length</source>
+      <translation type="unfinished">The position time reference selected in percent of the track length</translation>
     </message>
   </context>
   <context>

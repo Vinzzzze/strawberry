@@ -4413,6 +4413,10 @@ If there are no matches then it will use the largest image in the directory.</so
         <source>No matches found.  Clear the search box to show the whole playlist again.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+      <source>Show the collection option</source>
+      <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PlaylistDelegateBase</name>
@@ -5325,6 +5329,13 @@ Are you sure you want to continue?</source>
     </message>
     <message>
       <source>Obviously, if there are less grouped tracks to play than the given number, the queued tracks will be played as soon as the last grouped track is played.</source>
+    </message>
+    <message>
+      <source>The time played before and after the position time selected in seconds (0 for playing the complete track)</source>
+      <translation type="unfinished"></translation>
+    </message>
+    <message>
+      <source>The position time reference selected in percent of the track length</source>
       <translation type="unfinished"></translation>
     </message>
 </context>
