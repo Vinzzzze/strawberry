@@ -250,7 +250,14 @@ class Playlist : public QAbstractListModel {
   void InsertStreamingItems(StreamingServicePtr service, const SongList &songs, const int pos = -1, const bool play_now = false, const bool enqueue = false, const bool enqueue_next = false);
   void InsertRadioItems(const SongList &songs, const int pos = -1, const bool play_now = false, const bool enqueue = false, const bool enqueue_next = false);
 
-  void ReshuffleIndices();
+  void ReshuffleIndices() {
+
+    // First, cancel the replay position
+    next_song_after_queued_ = -1;
+
+    current_virtual_index_ = ReshuffleIndices(virtual_items_, ShuffleMode(), 0, false);
+
+  }
 
   // If this playlist contains the current item, this method will apply the "valid" flag on it.
   // If the "valid" flag is false, the song will be greyed out. Otherwise, the grey color will be undone.
@@ -308,6 +315,8 @@ class Playlist : public QAbstractListModel {
 
   void ItemReload(const QPersistentModelIndex &idx, const Song &old_metadata, const bool metadata_edit);
 
+  void Shuffle(const PlaylistSequence::ShuffleMode shuffle_mode);
+
  public Q_SLOTS:
   void set_current_row(const int i, const Playlist::AutoScroll autoscroll = Playlist::AutoScroll::Maybe, const bool is_stopping = false, const bool force_inform = false);
   void Paused();
@@ -321,6 +330,7 @@ class Playlist : public QAbstractListModel {
   void Clear();
   void RemoveDuplicateSongs();
   void RemoveUnavailableSongs();
+  // TODO : this method is only used for external unit tests : the version with parameter is the one that is used.
   void Shuffle();
 
   void ShuffleModeChanged(const PlaylistSequence::ShuffleMode shuffle_mode);
@@ -373,6 +383,8 @@ class Playlist : public QAbstractListModel {
   void MoveItemWithoutUndo(const int source, const int dest);
   void MoveItemsWithoutUndo(int start, const QList<int> &dest_rows);
   void ReOrderWithoutUndo(const PlaylistItemPtrList &new_items);
+
+  int ReshuffleIndices(QList<int>& virtual_items, const PlaylistSequence::ShuffleMode shuffle_mode, const int base_reference, const bool album_keep_track_order);
 
   void RemoveItemsNotInQueue();
 
