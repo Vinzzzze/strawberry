@@ -200,6 +200,7 @@ class Playlist : public QAbstractListModel {
   int next_row(const bool ignore_repeat_track = false);
   int previous_row(const bool ignore_repeat_track = false) const;
   int take_previous_row(const bool ignore_repeat_track = false);
+  const QList<int>& virtual_items() const { return virtual_items_; }
 
   QModelIndex current_index() const;
 
@@ -240,6 +241,7 @@ class Playlist : public QAbstractListModel {
   int PercentInterestSong() const { return !is_dynamic() && playlist_sequence_ ? playlist_sequence_->percent_interest_song() : 0; }
 
   QUndoStack *undo_stack() const { return undo_stack_; }
+  const PlaylistItemPtrList& played_items() const { return played_items_; }
 
   bool scrobbled() const { return scrobbled_; }
   void set_scrobbled(const bool state) { scrobbled_ = state; }
@@ -472,6 +474,9 @@ class Playlist : public QAbstractListModel {
   bool is_sorted_;
   Column sort_column_;
   Qt::SortOrder sort_order_;
+
+  // The identifier for the playlist items added to the list
+  PlaylistItemPtrList played_items_;
 };
 
 #endif  // PLAYLIST_H
