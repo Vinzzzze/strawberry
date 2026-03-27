@@ -1167,6 +1167,10 @@ Falls es keine Treffer gibt, wird das größte Bild aus dem Verzeichnis ausgewä
       <translation>Aktivieren Sie das Löschen von Dateien im Kontextmenü mit der rechten Maustaste</translation>
     </message>
     <message>
+      <source>Remove duplicates when adding tracks to the playlist</source>
+      <translation type="unfinished">Remove duplicates when adding tracks to the playlist</translation>
+    </message>
+    <message>
       <source>Add directory...</source>
       <translation>Verzeichnis hinzufügen …</translation>
     </message>
@@ -4730,6 +4734,10 @@ Falls es keine Treffer gibt, wird das größte Bild aus dem Verzeichnis ausgewä
     <message>
       <source>Enable delete files in the right click context menu</source>
       <translation>Aktivieren Sie das Löschen von Dateien im Kontextmenü mit der rechten Maustaste</translation>
+    </message>
+    <message>
+      <source>Remove duplicates when adding tracks to the playlist</source>
+      <translation type="unfinished">Remove duplicates when adding tracks to the playlist</translation>
     </message>
     <message>
       <source>Automatically sort playlist when inserting songs</source>

@@ -1167,6 +1167,10 @@ Hvis ingen ord passer, blir det største bildet i mappen brukt.</translation>
       <translation>Aktiv slett filer i høyreklikk-meny</translation>
     </message>
     <message>
+      <source>Remove duplicates when adding tracks to the playlist</source>
+      <translation type="unfinished">Remove duplicates when adding tracks to the playlist</translation>
+    </message>
+    <message>
       <source>Add directory...</source>
       <translation>Legg til mappe…</translation>
     </message>
@@ -4730,6 +4734,10 @@ Hvis ingen ord passer, blir det største bildet i mappen brukt.</translation>
     <message>
       <source>Enable delete files in the right click context menu</source>
       <translation>Aktiv slett filer i høyreklikk-meny</translation>
+    </message>
+    <message>
+      <source>Remove duplicates when adding tracks to the playlist</source>
+      <translation type="unfinished">Remove duplicates when adding tracks to the playlist</translation>
     </message>
     <message>
       <source>Automatically sort playlist when inserting songs</source>

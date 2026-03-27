@@ -108,7 +108,7 @@ Player::Player(const SharedPtr<TaskManager> task_manager, const SharedPtr<UrlHan
 
   QObject::connect(&*url_handlers, &UrlHandlers::Registered, this, &Player::UrlHandlerRegistered);
 
-  playlist_manager_->update_setting(engine_->grouping_before_queue());
+  playlist_manager_->update_setting(engine_->grouping_before_queue(), engine_->remove_duplicates());
 }
 
 void Player::Init() {
@@ -163,7 +163,7 @@ void Player::ReloadSettings() {
 
   engine_->ReloadSettings();
 
-  playlist_manager_->update_setting(engine_->grouping_before_queue());
+  playlist_manager_->update_setting(engine_->grouping_before_queue(), engine_->remove_duplicates());
 }
 
 void Player::UrlHandlerRegistered(UrlHandler *url_handler) const {

@@ -78,6 +78,9 @@ Q_DECLARE_METATYPE(ColumnAlignmentMap)
 // This default value keep the current behavior : the queued item is played at the end of the current track, even a grouped one
 static constexpr int GROUPED_BEFORE_QUEUE_DEFAULT = 1;
 
+// This default value keep the current behavior : the duplicates are ignored
+static constexpr bool REMOVE_DUPLICATES_DEFAULT = false;
+
 class Playlist : public QAbstractListModel {
   Q_OBJECT
 
@@ -96,6 +99,7 @@ class Playlist : public QAbstractListModel {
                     const QString &special_type = QString(),
                     const bool favorite = false,
                     const int grouped_before_queue = GROUPED_BEFORE_QUEUE_DEFAULT,
+                    const bool remove_duplicates = false,
                     const int half_playing_time_s = 0,
                     const int percent_interest_song = 50,
                     QObject *parent = nullptr);
@@ -202,8 +206,9 @@ class Playlist : public QAbstractListModel {
   int previous_row(const bool ignore_repeat_track = false);
   const QList<int>& virtual_items() const { return virtual_items_; }
 
-  void update_setting(const int grouped_before_queue) {
+  void update_setting(const int grouped_before_queue, const bool remove_duplicates) {
     init_grouped_song_before_queue_ = grouped_before_queue;
+    remove_duplicates_ = remove_duplicates;
   }
 
   QModelIndex current_index() const;
@@ -325,6 +330,7 @@ class Playlist : public QAbstractListModel {
   void ItemReload(const QPersistentModelIndex &idx, const Song &old_metadata, const bool metadata_edit);
 
   void Shuffle(const PlaylistSequence::ShuffleMode shuffle_mode);
+  void RemoveDuplicateSongs(PlaylistItemPtrList &items);
 
  public Q_SLOTS:
   void set_current_row(const int i, const Playlist::AutoScroll autoscroll = Playlist::AutoScroll::Maybe, const bool is_stopping = false, const bool force_inform = false);
@@ -337,7 +343,9 @@ class Playlist : public QAbstractListModel {
   void UpdateItems(SongList songs);
 
   void Clear();
-  void RemoveDuplicateSongs();
+  void RemoveDuplicateSongs() {
+    RemoveDuplicateSongs(items_);
+  }
   void RemoveUnavailableSongs();
   // TODO : this method is only used for external unit tests : the version with parameter is the one that is used.
   void Shuffle();
@@ -398,7 +406,10 @@ class Playlist : public QAbstractListModel {
   void RemoveItemsNotInQueue();
 
   // Removes rows with given indices from this playlist.
-  bool removeRows(QList<int> &rows);
+  bool removeRows(QList<int> &rows, PlaylistItemPtrList &items);
+  bool removeRows(QList<int> &rows) {
+    return removeRows(rows, items_);
+  }
 
   void TurnOnDynamicPlaylist(PlaylistGeneratorPtr gen);
   void InsertDynamicItems(const int count);
@@ -478,6 +489,9 @@ class Playlist : public QAbstractListModel {
   // Variables to maintain the time to play the song
   int half_playing_time_s_;
   int percent_interest_song_;
+
+  // Variables to insert tracks
+  bool remove_duplicates_;
 
   // Variables to count the number of times the queue list had been ignored due to grouping values
   int left_grouped_song_before_queue_;

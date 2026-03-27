@@ -73,7 +73,7 @@ void SmartPlaylistSearchPreview::Init(const SharedPtr<Player> player,
 
   collection_backend_ = collection_backend;
 
-  model_ = new Playlist(nullptr, nullptr, nullptr, collection_backend_, nullptr, -1, QString(), false, playlist_manager->grouped_before_queue(), 0, 50, this);
+  model_ = new Playlist(nullptr, nullptr, nullptr, collection_backend_, nullptr, -1, QString(), false, playlist_manager->grouped_before_queue(), playlist_manager->remove_duplicates(), 0, 50, this);
   ui_->tree->setModel(model_);
   ui_->tree->SetPlaylist(model_);
 

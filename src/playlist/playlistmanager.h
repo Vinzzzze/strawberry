@@ -60,6 +60,7 @@ class PlaylistManager : public PlaylistManagerInterface {
                            const SharedPtr<CollectionBackend> collection_backend,
                            const SharedPtr<CurrentAlbumCoverLoader> current_albumcover_loader,
                            const int grouped_before_queue,
+                           const bool remove_duplicates,
                            QObject *parent = nullptr);
 
   ~PlaylistManager() override;
@@ -73,9 +74,10 @@ class PlaylistManager : public PlaylistManagerInterface {
   Playlist *current() const override { return playlist(current_id()); }
   Playlist *active() const override { return playlist(active_id()); }
   int grouped_before_queue() const { return grouped_before_queue_; }
+  bool remove_duplicates() const { return remove_duplicates_; }
 
   // Update the grouped before queue value : we have to do more than just update the attribute
-  void update_setting(const int grouped_before_queue);
+  void update_setting(const int grouped_before_queue, const bool remove_duplicates);
 
   // Returns the collection of playlists managed by this PlaylistManager.
   QList<Playlist*> GetAllPlaylists() const override;
@@ -193,6 +195,7 @@ class PlaylistManager : public PlaylistManagerInterface {
   int active_;
   int playlists_loading_;
   int grouped_before_queue_;
+  bool remove_duplicates_;
 };
 
 #endif  // PLAYLISTMANAGER_H

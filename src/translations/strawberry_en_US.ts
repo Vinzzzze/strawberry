@@ -1162,8 +1162,12 @@ If there are no matches then it will use the largest image in the directory.</so
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Enable delete files in the right click context menu</source>
-        <translation type="unfinished"></translation>
+      <source>Enable delete files in the right click context menu</source>
+      <translation type="unfinished"></translation>
+    </message>
+    <message>
+      <source>Remove duplicates when adding tracks to the playlist</source>
+      <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Add directory...</source>
@@ -4725,8 +4729,12 @@ If there are no matches then it will use the largest image in the directory.</so
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Enable delete files in the right click context menu</source>
-        <translation type="unfinished"></translation>
+      <source>Enable delete files in the right click context menu</source>
+      <translation type="unfinished"></translation>
+    </message>
+    <message>
+      <source>Remove duplicates when adding tracks to the playlist</source>
+      <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Automatically sort playlist when inserting songs</source>
