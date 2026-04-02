@@ -264,7 +264,7 @@ class Playlist : public QAbstractListModel {
   // Removes from the playlist all local files that don't exist anymore.
   void RemoveDeletedSongs();
 
-  void StopAfter(const int row);
+  void StopAfter(const int row, const bool grouped_tracks);
   void ReloadItems(const QList<int> &rows);
   void InformOfCurrentSongChange(const bool minor);
 
@@ -360,7 +360,7 @@ class Playlist : public QAbstractListModel {
 
  private:
   void SetCurrentIsPaused(const bool paused);
-  int NextVirtualIndex(int i, const bool ignore_repeat_track) const;
+  int NextVirtualIndex(int i, const bool ignore_repeat_track, const bool no_grouping_track_count) const;
   int PreviousVirtualIndex(int i, const bool ignore_repeat_track) const;
   bool FilterContainsVirtualIndex(const int i) const;
 
@@ -461,7 +461,7 @@ class Playlist : public QAbstractListModel {
   Qt::SortOrder sort_order_;
 
   // Variables to count the number of times the queue list had been ignored due to grouping values
-  int left_grouped_song_before_queue_;
+  mutable int left_grouped_song_before_queue_;
   int init_grouped_song_before_queue_;
   int next_song_after_queued_;
 };
