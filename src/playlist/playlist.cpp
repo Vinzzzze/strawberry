@@ -564,14 +564,69 @@ bool Playlist::FilterContainsVirtualIndex(const int i) const {
   return filter_->filterAcceptsRow(virtual_items_[i], QModelIndex());
 }
 
-int Playlist::NextVirtualIndex(int i, const bool ignore_repeat_track) const {
+int Playlist::NextVirtualIndex(int i, const bool ignore_repeat_track, const bool no_grouping_track_count) const {
 
   const PlaylistSequence::RepeatMode repeat_mode = RepeatMode();
   const bool album_only = repeat_mode == PlaylistSequence::RepeatMode::Album || ShuffleMode() == PlaylistSequence::ShuffleMode::InsideAlbum;
 
   // This one's easy - if we have to repeat the current track then just return i
   if (repeat_mode == PlaylistSequence::RepeatMode::Track && !ignore_repeat_track) {
+    bool rewind = true;
+    int next_item = i;
+    auto size_virtual = virtual_items_.size();
+    if (!no_grouping_track_count && static_cast<unsigned int>(next_item) < static_cast<unsigned int>(size_virtual)) {
+      Song this_song = item_at(virtual_items_[next_item])->EffectiveMetadata();
+
+      if (++next_item < size_virtual--) {
+        Song next_song = item_at(virtual_items_[next_item])->EffectiveMetadata();
+
+        if (this_song.IsOnSameGrouping(next_song)) {
+          int init_left_before_queue = left_grouped_song_before_queue_;
+
+          rewind = (   left_grouped_song_before_queue_ > 0
+                    && --left_grouped_song_before_queue_ == 0   );
+
+          while (!rewind && !FilterContainsVirtualIndex(next_item) && next_item < size_virtual) {
+            next_song = item_at(virtual_items_[++next_item])->EffectiveMetadata();
+
+            if (this_song.IsOnSameGrouping(next_song)) {
+              --next_item;
+              rewind = true;
+
+              break;
+            }
+            rewind = (   left_grouped_song_before_queue_ > 0
+                      && --left_grouped_song_before_queue_ == 0   );
+          }
+
+          if (rewind) {
+            left_grouped_song_before_queue_ = init_left_before_queue;
+          }
+          else {
+            i = next_item;
+          }
+        }
+      }
+      if (rewind && i > 0) {
+        bool on_grouping;
+        next_item = i;
+        Song next_song = item_at(virtual_items_[--next_item])->EffectiveMetadata();
+
+        while (   (on_grouping = this_song.IsOnSameGrouping(next_song))
+               && next_item > 0
+               && (   init_grouped_song_before_queue_ == 0
+                   || ++left_grouped_song_before_queue_ > init_grouped_song_before_queue_   )   ) {
+          next_song = item_at(virtual_items_[--next_item])->EffectiveMetadata();
+        }
+        if (!on_grouping) {
+          ++next_item;
+        }
+        left_grouped_song_before_queue_ = init_grouped_song_before_queue_;
+        i = next_item;
+      }
+    }
     if (!FilterContainsVirtualIndex(i)) {
+      left_grouped_song_before_queue_ = init_grouped_song_before_queue_;
       return static_cast<int>(virtual_items_.count());  // It's not in the filter any more
     }
     return i;
@@ -615,6 +670,24 @@ int Playlist::PreviousVirtualIndex(int i, const bool ignore_repeat_track) const 
 
   // This one's easy - if we have to repeat the current track then just return i
   if (repeat_mode == PlaylistSequence::RepeatMode::Track && !ignore_repeat_track) {
+    if (i > 0) {
+      bool on_grouping;
+      int next_item = i;
+      Song this_song = item_at(virtual_items_[next_item])->EffectiveMetadata();
+      Song next_song = item_at(virtual_items_[--next_item])->EffectiveMetadata();
+
+      while (   (on_grouping = this_song.IsOnSameGrouping(next_song))
+             && next_item > 0
+             && init_grouped_song_before_queue_ != 0
+             && ++left_grouped_song_before_queue_ > init_grouped_song_before_queue_) {
+        next_song = item_at(virtual_items_[--next_item])->EffectiveMetadata();
+      }
+      if (!on_grouping) {
+        ++next_item;
+      }
+      left_grouped_song_before_queue_ = init_grouped_song_before_queue_;
+      i = next_item;
+    }
     if (!FilterContainsVirtualIndex(i)) return -1;
     return i;
   }
@@ -650,8 +723,12 @@ int Playlist::next_row(const bool ignore_repeat_track, const bool no_grouping_tr
   int next_virtual_index = next_song_after_queued_;
 
   if (next_virtual_index < 0) {
-    next_virtual_index = NextVirtualIndex(current_virtual_index_, ignore_repeat_track);
+    next_virtual_index = NextVirtualIndex(current_virtual_index_, ignore_repeat_track, no_grouping_track_count);
     switch (RepeatMode()) {
+      case PlaylistSequence::RepeatMode::OneByOne:
+
+        return virtual_items_.value(next_virtual_index);
+
       default:
 
         // Compare with unsigned int to avoid to check if it is less than the count but positive
@@ -684,10 +761,13 @@ int Playlist::next_row(const bool ignore_repeat_track, const bool no_grouping_tr
         [[fallthrough]];
 
       case PlaylistSequence::RepeatMode::Intro:
-      case PlaylistSequence::RepeatMode::Track:
 
         // Reset the grouping values
         left_grouped_song_before_queue_ = init_grouped_song_before_queue_;
+
+        [[fallthrough]];
+
+      case PlaylistSequence::RepeatMode::Track:
 
         // Any queued items take priority
         if (!queue_->is_empty()) {
@@ -724,7 +804,7 @@ int Playlist::next_row(const bool ignore_repeat_track, const bool no_grouping_tr
 
       default:
         ReshuffleIndices();
-        next_virtual_index = NextVirtualIndex(-1, ignore_repeat_track);
+        next_virtual_index = NextVirtualIndex(-1, ignore_repeat_track, true);
         break;
     }
   }
@@ -1930,12 +2010,38 @@ PlaylistItemPtrList Playlist::RemoveItemsWithoutUndo(const int row, const int co
 
 }
 
-void Playlist::StopAfter(const int row) {
+void Playlist::StopAfter(const int row, const bool grouped_tracks) {
 
   const QModelIndex old_stop_after = stop_after_;
 
   if ((stop_after_.isValid() && stop_after_.row() == row) || row == -1) {
     stop_after_ = QModelIndex();
+  }
+  else if (grouped_tracks) {
+    int stop_row = row;
+    auto size_virtual = virtual_items_.size();
+    if (static_cast<unsigned int>(stop_row) < static_cast<unsigned int>(size_virtual)) {
+      Song this_song = item_at(virtual_items_[stop_row])->EffectiveMetadata();
+
+      if (++stop_row < size_virtual--) {
+        int left_before_queue = init_grouped_song_before_queue_;
+        Song next_song = item_at(virtual_items_[stop_row])->EffectiveMetadata();
+
+        while (   this_song.IsOnSameGrouping(next_song)
+               && (   left_before_queue == 0
+                   || --left_before_queue > 0   )
+               && stop_row < size_virtual) {
+          next_song = item_at(virtual_items_[++stop_row])->EffectiveMetadata();
+        }
+      }
+      --stop_row;
+    }
+    if (stop_after_.isValid() && stop_after_.row() == stop_row) {
+      stop_after_ = QModelIndex();
+    }
+    else {
+      stop_after_ = index(stop_row, 0);
+    }
   }
   else {
     stop_after_ = index(row, 0);
@@ -1969,6 +2075,28 @@ void Playlist::ClearStreamMetadata() {
 bool Playlist::stop_after_current() const {
 
   if (RepeatMode() == PlaylistSequence::RepeatMode::OneByOne) {
+    int next_item = current_virtual_index_;
+    auto size_virtual = virtual_items_.size();
+
+    if (next_item >= size_virtual) {
+      return true;
+    }
+    Song this_song = item_at(virtual_items_[next_item])->EffectiveMetadata();
+
+    if (++next_item < size_virtual) {
+      Song next_song = item_at(virtual_items_[next_item])->EffectiveMetadata();
+
+      if (this_song.IsOnSameGrouping(next_song)) {
+        if (   left_grouped_song_before_queue_ == 0
+            || --left_grouped_song_before_queue_ > 0   ) {
+          return false;
+        }
+        left_grouped_song_before_queue_ = init_grouped_song_before_queue_;
+
+        return true;
+      }
+    }
+    left_grouped_song_before_queue_ = init_grouped_song_before_queue_;
     return true;
   }
 
