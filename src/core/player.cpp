@@ -493,7 +493,8 @@ bool Player::HandleStopAfter(const Playlist::AutoScroll autoscroll) {
       playlist_manager_->active()->set_current_row(next_row, autoscroll, true);
     }
 
-    playlist_manager_->active()->StopAfter(-1);
+    // There is no use to take in account the grouped tracks
+    playlist_manager_->active()->StopAfter(-1, false);
 
     Stop(true);
     return true;
@@ -511,7 +512,12 @@ void Player::TrackEnded() {
 
   if (HandleStopAfter(Playlist::AutoScroll::Maybe)) return;
 
-  NextInternal(EngineBase::TrackChangeType::Auto, Playlist::AutoScroll::Maybe);
+  // As we just call the HandleStopAfter function, we don't want to call it a second time
+  // so I am not calling NextInternal as it call HandleStopAfter a second time
+  pause_time_ = QDateTime();
+  play_offset_nanosec_ = 0;
+
+  NextItem(EngineBase::TrackChangeType::Auto, Playlist::AutoScroll::Maybe);
 
 }
 
@@ -601,7 +607,8 @@ void Player::Stop(const bool stop_after) {
 }
 
 void Player::StopAfterCurrent() {
-  playlist_manager_->active()->StopAfter(playlist_manager_->active()->current_row());
+  // We selected the stop track, so, we want to take the grouped tracks in account and stop where the grouped parameter will authorise the stop to be done
+  playlist_manager_->active()->StopAfter(playlist_manager_->active()->current_row(), false);
 }
 
 bool Player::PreviousWouldRestartTrack() const {
