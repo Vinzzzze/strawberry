@@ -2449,7 +2449,8 @@ void MainWindow::PlaylistStopAfter() {
   const QModelIndex menu_index = PlaylistMenuIndex();
   if (!menu_index.isValid()) return;
 
-  app_->playlist_manager()->current()->StopAfter(menu_index.row());
+  // We selected the stop track, so, we want to take the grouped tracks in account and stop where the grouped parameter will authorise the stop to be done
+  app_->playlist_manager()->current()->StopAfter(menu_index.row(), true);
 
 }
 
