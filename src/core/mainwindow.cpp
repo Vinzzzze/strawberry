@@ -1705,7 +1705,8 @@ void MainWindow::ToggleHide() {
 }
 
 void MainWindow::StopAfterCurrent() {
-  app_->playlist_manager()->current()->StopAfter(app_->playlist_manager()->current()->current_row());
+  // As a direct command we want to stop whatever the grouped tracks
+  app_->playlist_manager()->current()->StopAfter(app_->playlist_manager()->current()->current_row(), false);
   Q_EMIT StopAfterToggled(app_->playlist_manager()->active()->stop_after_current());
 }
 
@@ -2203,7 +2204,8 @@ void MainWindow::PlaylistPlay() {
 }
 
 void MainWindow::PlaylistStopAfter() {
-  app_->playlist_manager()->current()->StopAfter(playlist_menu_index_.row());
+  // We selected the stop track, so, we want to take the grouped tracks in account and stop where the grouped parameter will authorise the stop to be done
+  app_->playlist_manager()->current()->StopAfter(playlist_menu_index_.row(), true);
 }
 
 void MainWindow::RescanSongs() {
