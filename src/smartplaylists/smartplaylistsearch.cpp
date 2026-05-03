@@ -86,13 +86,16 @@ QString SmartPlaylistSearch::ToSql(const QString &songs_table, QVariantList &bou
   }
 
   // Add sort by
-  if (sort_type_ == SortType::Random) {
-    sql += " ORDER BY random()"_L1;
-  }
-  else {
+  if (sort_type_ != SortType::Random) {
     // Sort songs with the same value by ROWID, so the order is the same every time, since the next songs of a dynamic playlist are found with an offset.
     const QString sort_order = sort_type_ == SortType::FieldAsc ? u" ASC"_s : u" DESC"_s;
     sql += " ORDER BY "_L1 + SmartPlaylistSearchTerm::FieldColumnName(sort_field_) + sort_order + ", ROWID"_L1 + sort_order;
+  }
+  else if (unlimited_) {
+    sql += " ORDER BY "_L1 + SmartPlaylistSearchTerm::FieldColumnName(SmartPlaylistSearchTerm::Field::Artist) + ","_L1 + SmartPlaylistSearchTerm::FieldColumnName(SmartPlaylistSearchTerm::Field::Album) + ","_L1 + SmartPlaylistSearchTerm::FieldColumnName(SmartPlaylistSearchTerm::Field::Disc) + ","_L1 + SmartPlaylistSearchTerm::FieldColumnName(SmartPlaylistSearchTerm::Field::Track);
+  }
+  else {
+    sql += " ORDER BY random()"_L1;
   }
 
   // Add limit
