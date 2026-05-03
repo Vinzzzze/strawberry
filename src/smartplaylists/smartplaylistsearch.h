@@ -62,6 +62,7 @@ class SmartPlaylistSearch {
   SortType sort_type_;
   SmartPlaylistSearchTerm::Field sort_field_;
   int limit_;
+  bool unlimited_ = false;
 
   // Not persisted, used to alter the behaviour of the query
   QList<int> id_not_in_;
