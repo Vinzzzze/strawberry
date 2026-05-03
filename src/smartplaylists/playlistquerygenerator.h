@@ -52,6 +52,8 @@ class PlaylistQueryGenerator : public PlaylistGenerator {
   int GetDynamicFuture() override { return search_.limit_; }
 
  private:
+  PlaylistItemPtrList FinalizeGenerate(const SongList& songs);
+
   SmartPlaylistSearch search_;
   bool dynamic_;
 

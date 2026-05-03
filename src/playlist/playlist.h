@@ -207,10 +207,7 @@ class Playlist : public QAbstractListModel {
   int take_previous_row(const bool ignore_repeat_track = false);
   const QList<int>& virtual_items() const { return virtual_items_; }
 
-  void update_setting(const int grouped_before_queue, const bool remove_duplicates) {
-    init_grouped_song_before_queue_ = grouped_before_queue;
-    remove_duplicates_ = remove_duplicates;
-  }
+  void update_setting(const int grouped_before_queue, const bool remove_duplicates);
 
   QModelIndex current_index() const;
 
