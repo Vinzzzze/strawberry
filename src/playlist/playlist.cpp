@@ -1308,6 +1308,8 @@ void Playlist::ResetDynamicItemsPending() {
 
 void Playlist::TurnOnDynamicPlaylist(PlaylistGeneratorPtr gen) {
 
+  gen->set_grouped_mode(init_grouped_song_before_queue_);
+
   dynamic_playlist_ = gen;
   ResetDynamicItemsPending();
   ShuffleModeChanged(PlaylistSequence::ShuffleMode::Off);
@@ -2771,6 +2773,14 @@ void Playlist::ReloadItems(const QList<int> &rows) {
     }
   }
 
+}
+
+void Playlist::update_setting(const int grouped_before_queue) {
+  init_grouped_song_before_queue_ = grouped_before_queue;
+
+  if (dynamic_playlist_) {
+    dynamic_playlist_->set_grouped_mode(init_grouped_song_before_queue_);
+  }
 }
 
 void Playlist::Shuffle(const PlaylistSequence::ShuffleMode shuffle_mode) {
