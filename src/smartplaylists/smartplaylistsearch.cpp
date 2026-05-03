@@ -86,11 +86,14 @@ QString SmartPlaylistSearch::ToSql(const QString &songs_table, QVariantList &bou
   }
 
   // Add sort by
-  if (sort_type_ == SortType::Random) {
-    sql += " ORDER BY random()"_L1;
+  if (sort_type_ != SortType::Random) {
+    sql += " ORDER BY "_L1 + SmartPlaylistSearchTerm::FieldColumnName(sort_field_) + (sort_type_ == SortType::FieldAsc ? " ASC"_L1 : " DESC"_L1);
+  }
+  else if (unlimited_) {
+    sql += " ORDER BY "_L1 + SmartPlaylistSearchTerm::FieldColumnName(SmartPlaylistSearchTerm::Field::Artist) + ","_L1 + SmartPlaylistSearchTerm::FieldColumnName(SmartPlaylistSearchTerm::Field::Album) + ","_L1 + SmartPlaylistSearchTerm::FieldColumnName(SmartPlaylistSearchTerm::Field::Disc) + ","_L1 + SmartPlaylistSearchTerm::FieldColumnName(SmartPlaylistSearchTerm::Field::Track);
   }
   else {
-    sql += " ORDER BY "_L1 + SmartPlaylistSearchTerm::FieldColumnName(sort_field_) + (sort_type_ == SortType::FieldAsc ? " ASC"_L1 : " DESC"_L1);
+    sql += " ORDER BY random()"_L1;
   }
 
   // Add limit

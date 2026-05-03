@@ -20,12 +20,15 @@
 
 #include "config.h"
 
+#include <random>
+
 #include <QIODevice>
 #include <QDataStream>
 #include <QByteArray>
 #include <QString>
 #include <QVariantList>
 
+#include "playlist/playlist.h"
 #include "playlistquerygenerator.h"
 #include "collection/collectionbackend.h"
 
@@ -76,23 +79,10 @@ PlaylistItemPtrList PlaylistQueryGenerator::Generate() {
 
 }
 
-PlaylistItemPtrList PlaylistQueryGenerator::GenerateMore(const int count) {
+PlaylistItemPtrList PlaylistQueryGenerator::FinalizeGenerate(const SongList& songs) {
 
-  SmartPlaylistSearch search_copy = search_;
-  search_copy.id_not_in_ = previous_ids_;
-  if (count > 0) {
-    search_copy.limit_ = count;
-  }
-
-  if (search_copy.sort_type_ != SmartPlaylistSearch::SortType::Random) {
-    search_copy.first_item_ = current_pos_;
-    current_pos_ += search_copy.limit_;
-  }
-
-  QVariantList bound_values;
-  const QString sql = search_copy.ToSql(collection_backend_->songs_table(), bound_values);
-  const SongList songs = collection_backend_->ExecuteQuery(sql, bound_values);
   PlaylistItemPtrList items;
+
   items.reserve(songs.count());
   for (const Song &song : songs) {
     items << PlaylistItem::NewFromSong(song);
@@ -102,7 +92,74 @@ PlaylistItemPtrList PlaylistQueryGenerator::GenerateMore(const int count) {
       previous_ids_.removeFirst();
     }
   }
-
   return items;
+
+}
+
+PlaylistItemPtrList PlaylistQueryGenerator::GenerateMore(const int count) {
+
+  SmartPlaylistSearch search_copy = search_;
+  search_copy.id_not_in_ = previous_ids_;
+  search_copy.unlimited_ = (grouped_mode_ != 1);
+  if (count > 0) {
+    search_copy.limit_ = count;
+  }
+
+  if (search_copy.sort_type_ != SmartPlaylistSearch::SortType::Random) {
+    search_copy.first_item_ = current_pos_;
+    current_pos_ += search_copy.limit_;
+  }
+  else if (search_copy.unlimited_) {
+    search_copy.limit_ = -1;
+  }
+
+  QVariantList bound_values;
+  const QString sql = search_copy.ToSql(collection_backend_->songs_table(), bound_values);
+  const SongList songs = collection_backend_->ExecuteQuery(sql, bound_values);
+
+  if (search_copy.unlimited_) {
+    Playlist random_playlist(nullptr, nullptr, nullptr, nullptr, nullptr, 0);
+    SongList local_song;
+    const int local_limit = count > 0 ? count : search_.limit_;
+
+    random_playlist.InsertSongs(songs);
+    random_playlist.Shuffle(PlaylistSequence::ShuffleMode::Grouping);
+
+    if (grouped_mode_ == 0 || local_limit >= songs.count()) {
+      for (PlaylistItemPtr& current_item : random_playlist.items()) {
+        if (local_song.count() >= local_limit && local_limit > 0 && !local_song.last().IsOnSameGrouping(current_item->EffectiveMetadata())) {
+          break;
+        }
+        local_song << current_item->EffectiveMetadata();
+      }
+    }
+    else {
+      static std::mt19937 rng{std::random_device{}()};
+      std::uniform_int_distribution<int> rand_number(0, songs.count() - local_limit);
+      int left_grouped;
+      int left_continue = rand_number(rng);
+
+      for (PlaylistItemPtr& current_item : random_playlist.items()) {
+        if (left_continue > 0) {
+          --left_continue;
+          continue;
+        }
+        if (local_song.count() > 0 && local_song.last().IsOnSameGrouping(current_item->EffectiveMetadata())) {
+          --left_grouped;
+        }
+        else {
+          left_grouped = grouped_mode_;
+        }
+        if (local_song.count() >= local_limit && local_limit > 0 && left_grouped <= 0) {
+          break;
+        }
+        local_song << current_item->EffectiveMetadata();
+      }
+    }
+
+    return FinalizeGenerate(local_song);
+  }
+
+  return FinalizeGenerate(songs);
 
 }

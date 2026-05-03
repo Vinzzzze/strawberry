@@ -201,9 +201,7 @@ class Playlist : public QAbstractListModel {
   int previous_row(const bool ignore_repeat_track = false) const;
   int take_previous_row(const bool ignore_repeat_track = false);
 
-  void update_setting(const int grouped_before_queue) {
-    init_grouped_song_before_queue_ = grouped_before_queue;
-  }
+  void update_setting(const int grouped_before_queue);
 
   QModelIndex current_index() const;
 
@@ -282,6 +280,7 @@ class Playlist : public QAbstractListModel {
 #endif
 
   // QAbstractListModel
+  PlaylistItemPtrList items() const { return items_; }
   int rowCount(const QModelIndex& = QModelIndex()) const override { return items_.count(); }
   int columnCount(const QModelIndex& = QModelIndex()) const override { return static_cast<int>(ColumnCount); }
   QVariant data(const QModelIndex &idx, const int role = Qt::DisplayRole) const override;
