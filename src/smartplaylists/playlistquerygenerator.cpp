@@ -21,6 +21,8 @@
 
 #include "config.h"
 
+#include <random>
+
 #include <QIODevice>
 #include <QDataStream>
 #include <QByteArray>
@@ -31,6 +33,7 @@
 #include <QMutexLocker>
 #include <QCoreApplication>
 
+#include "playlist/playlist.h"
 #include "playlistquerygenerator.h"
 #include "collection/collectionbackend.h"
 
@@ -84,6 +87,21 @@ PlaylistItemPtrList PlaylistQueryGenerator::Generate() {
 
 }
 
+PlaylistItemPtrList PlaylistQueryGenerator::FinalizeGenerate(const SongList& songs) {
+
+  PlaylistItemPtrList items;
+
+  items.reserve(songs.count());
+  for (const Song &song : songs) {
+    // In sorted order the offset can return a song that was already added, when songs earlier in the order were added to the collection after the previous call, so skip those.
+    if (previous_ids_.contains(song.id())) continue;
+    items << PlaylistItem::NewFromSong(song);
+    previous_ids_ << song.id();
+  }
+  return items;
+
+}
+
 PlaylistItemPtrList PlaylistQueryGenerator::GenerateMore(const int count) {
 
   QMutexLocker l(&mutex_);
@@ -94,6 +112,7 @@ PlaylistItemPtrList PlaylistQueryGenerator::GenerateMore(const int count) {
 PlaylistItemPtrList PlaylistQueryGenerator::GenerateMoreLocked(const int count) {
 
   SmartPlaylistSearch search_copy = search_;
+  search_copy.unlimited_ = (grouped_mode_ != 1);
   if (count > 0) {
     search_copy.limit_ = count;
   }
@@ -106,6 +125,9 @@ PlaylistItemPtrList PlaylistQueryGenerator::GenerateMoreLocked(const int count) 
   }
   else {
     search_copy.first_item_ = current_pos_;
+    if (search_copy.unlimited_) {
+      search_copy.limit_ = -1;
+    }
   }
 
   QVariantList bound_values;
@@ -122,19 +144,49 @@ PlaylistItemPtrList PlaylistQueryGenerator::GenerateMoreLocked(const int count) 
     collection_backend_->Close();
   }
 
-  PlaylistItemPtrList items;
-  items.reserve(songs.count());
-  for (const Song &song : songs) {
-    // In sorted order the offset can return a song that was already added, when songs earlier in the order were added to the collection after the previous call, so skip those.
-    if (previous_ids_.contains(song.id())) continue;
-    items << PlaylistItem::NewFromSong(song);
-    previous_ids_ << song.id();
+  if (search_copy.unlimited_) {
+    Playlist random_playlist(nullptr, nullptr, nullptr, nullptr, nullptr, 0);
+    SongList local_song;
+    const int local_limit = count > 0 ? count : search_.limit_;
 
-    if (previous_ids_.count() > GetDynamicFuture() + GetDynamicHistory()) {
-      previous_ids_.removeFirst();
+    random_playlist.InsertSongs(songs);
+    random_playlist.Shuffle(PlaylistSequence::ShuffleMode::Grouping);
+
+    if (grouped_mode_ == 0 || local_limit >= songs.count()) {
+      for (PlaylistItemPtr& current_item : random_playlist.items()) {
+        if (local_song.count() >= local_limit && local_limit > 0 && !local_song.last().IsOnSameGrouping(current_item->EffectiveMetadata())) {
+          break;
+        }
+        local_song << current_item->EffectiveMetadata();
+      }
     }
+    else {
+      static std::mt19937 rng{std::random_device{}()};
+      std::uniform_int_distribution<int> rand_number(0, songs.count() - local_limit);
+      int left_grouped = grouped_mode_;
+      int left_continue = rand_number(rng);
+
+      for (PlaylistItemPtr& current_item : random_playlist.items()) {
+        if (left_continue > 0) {
+          --left_continue;
+          continue;
+        }
+        if (local_song.count() > 0 && local_song.last().IsOnSameGrouping(current_item->EffectiveMetadata())) {
+          --left_grouped;
+        }
+        else {
+          left_grouped = grouped_mode_;
+        }
+        if (local_song.count() >= local_limit && local_limit > 0 && left_grouped <= 0) {
+          break;
+        }
+        local_song << current_item->EffectiveMetadata();
+      }
+    }
+
+    return FinalizeGenerate(local_song);
   }
 
-  return items;
+  return FinalizeGenerate(songs);
 
 }

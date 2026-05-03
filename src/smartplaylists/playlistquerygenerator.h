@@ -56,7 +56,8 @@ class PlaylistQueryGenerator : public PlaylistGenerator {
  private:
   PlaylistItemPtrList GenerateMoreLocked(const int count);
 
- private:
+  PlaylistItemPtrList FinalizeGenerate(const SongList& songs);
+
   SmartPlaylistSearch search_;
   bool dynamic_;
 
