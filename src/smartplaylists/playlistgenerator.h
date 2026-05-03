@@ -59,6 +59,7 @@ class PlaylistGenerator : public QObject, public enable_shared_from_this<Playlis
   void set_name(const QString &name) { name_ = name; }
   SharedPtr<CollectionBackend> collection() const { return collection_backend_; }
   QString name() const { return name_; }
+  void set_grouped_mode(int grouped_mode) { grouped_mode_ = grouped_mode; }
 
   // Name of the subclass
   virtual Type type() const = 0;
@@ -92,6 +93,7 @@ class PlaylistGenerator : public QObject, public enable_shared_from_this<Playlis
 
  protected:
   SharedPtr<CollectionBackend> collection_backend_;
+  int grouped_mode_;
 
  private:
   QString name_;
