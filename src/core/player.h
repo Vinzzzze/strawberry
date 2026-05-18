@@ -139,6 +139,11 @@ class Player : public PlayerInterface {
 
   void UnPause();
 
+#ifdef HAVE_DBUS
+  void DisableSleep();
+  void EnableSleep();
+#endif
+
  private:
   const SharedPtr<TaskManager> task_manager_;
   const SharedPtr<UrlHandlers> url_handlers_;

@@ -36,6 +36,11 @@
 #include <QDateTime>
 #include <QTimer>
 #include <QSettings>
+#ifdef HAVE_DBUS
+#  include <QDBusConnection>
+#  include <QDBusInterface>
+#  include <QDBusReply>
+#endif
 
 #include "constants/behavioursettings.h"
 #include "constants/playlistsettings.h"
@@ -71,6 +76,16 @@ constexpr char kVolume[] = "volume";
 constexpr char kPlaybackState[] = "playback_state";
 constexpr char kPlaybackPlaylist[] = "playback_playlist";
 constexpr char kPlaybackPosition[] = "playback_position";
+
+QString const kSessionSleepServiceName = QLatin1String("org.gnome.SessionManager");
+QString const kSessionSleepPathName = QLatin1String("/org/gnome/SessionManager");
+
+QString const kSessionSleepInhibitMode = QLatin1String("Inhibit");
+QString const kSessionSleepInhibitOrigin = QLatin1String("Strawberry Music Player");
+QString const kSessionSleepInhibitReason = QLatin1String("Start playing music");
+QString const kSessionSleepUnInhibitMode = QLatin1String("UnInhibit");
+
+uint sessionSleepValue = 0;
 }  // namespace
 
 Player::Player(const SharedPtr<TaskManager> task_manager, const SharedPtr<UrlHandlers> url_handlers, const SharedPtr<PlaylistManager> playlist_manager, QObject *parent)
@@ -537,7 +552,7 @@ void Player::PlayPause(const quint64 offset_nanosec, const Playlist::AutoScroll 
       else {
         pause_time_ = QDateTime::currentDateTime();
         play_offset_nanosec_ = static_cast<quint64>(engine_->position_nanosec());
-        engine_->Pause();
+        Pause();
       }
       break;
     }
@@ -552,6 +567,9 @@ void Player::PlayPause(const quint64 offset_nanosec, const Playlist::AutoScroll 
       int i = playlist_manager_->active()->current_row();
       if (i == -1) i = playlist_manager_->active()->last_played_row();
       if (i == -1) i = 0;
+#ifdef HAVE_DBUS
+      DisableSleep();
+#endif
       PlayAt(i, false, offset_nanosec, EngineBase::TrackChangeType::First, autoscroll, true);
       break;
     }
@@ -560,6 +578,10 @@ void Player::PlayPause(const quint64 offset_nanosec, const Playlist::AutoScroll 
 }
 
 void Player::UnPause() {
+
+#ifdef HAVE_DBUS
+  DisableSleep();
+#endif
 
   if (current_item_ && pause_time_.isValid()) {
     const Song &song = current_item_->EffectiveMetadata();
@@ -604,6 +626,10 @@ void Player::Stop(const bool stop_after) {
   current_item_.reset();
   pause_time_ = QDateTime();
   play_offset_nanosec_ = 0;
+
+#ifdef HAVE_DBUS
+  EnableSleep();
+#endif
 
 }
 
@@ -879,7 +905,13 @@ void Player::Mute() {
 
 }
 
-void Player::Pause() { engine_->Pause(); }
+void Player::Pause() {
+  engine_->Pause();
+
+#ifdef HAVE_DBUS
+  EnableSleep();
+#endif
+}
 
 void Player::Play(const quint64 offset_nanosec) {
 
@@ -901,6 +933,36 @@ void Player::Play(const quint64 offset_nanosec) {
   }
 
 }
+
+#ifdef HAVE_DBUS
+void Player::DisableSleep() {
+  QDBusInterface sleepSessionInterface(kSessionSleepServiceName, kSessionSleepPathName, kSessionSleepServiceName, QDBusConnection::sessionBus());
+
+  if (!sleepSessionInterface.isValid()) {
+    return;
+  }
+
+  QDBusReply<uint> reply = sleepSessionInterface.call(kSessionSleepInhibitMode, kSessionSleepInhibitOrigin, kSessionSleepInhibitReason);
+
+  if (reply.isValid()) {
+      sessionSleepValue = reply.value();
+  }
+}
+
+void Player::EnableSleep() {
+  QDBusInterface sleepSessionInterface(kSessionSleepServiceName, kSessionSleepPathName, kSessionSleepServiceName, QDBusConnection::sessionBus());
+
+  if (!sleepSessionInterface.isValid()) {
+    return;
+  }
+
+  QDBusReply<uint> reply = sleepSessionInterface.call(kSessionSleepUnInhibitMode, sessionSleepValue);
+
+  if (reply.isValid()) {
+      sessionSleepValue = reply.value();
+  }
+}
+#endif
 
 void Player::PlayWithPause(const quint64 offset_nanosec) {
 
