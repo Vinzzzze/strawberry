@@ -859,7 +859,11 @@
     </message>
     <message>
       <source>Error while querying CDDA tracks.</source>
-      <translation>Erreur lors de l'interrogation du lecteur CDDA pour obtenir la liste des pistes.</translation>
+      <translation>Erreur lors de l&apos;interrogation du lecteur CDDA pour obtenir la liste des pistes.</translation>
+    </message>
+    <message>
+      <source>The &apos;track&apos; format is not supported by GStreamer.</source>
+      <translation>Le format de la &apos;piste&apos; n&apos;est pas supporté par GStreamer.</translation>
     </message>
   </context>
   <context>
@@ -1035,8 +1039,8 @@
   <context>
     <name>CollectionLibrary</name>
     <message>
-      <source>Support for sort tags artist, album, album artist, title, composer and performer</source>
-      <translation type="unfinished">Support for sort tags artist, album, album artist, title, composer and performer</translation>
+      <source>Support for sort tags artist, album, album artist, title, composer, and performer</source>
+      <translation>Support pour le tri par les tags artist, album, album artist, title, composer et performer</translation>
     </message>
     <message>
       <source>Saving playcounts and ratings</source>
@@ -3008,7 +3012,7 @@ S&apos;il n&apos;en existe pas alors Strawberry utilisera la plus grande image d
     </message>
     <message>
       <source>Original year - Album - Disc</source>
-      <translation type="unfinished">Original year - Album - Disc</translation>
+      <translation>Année - Album - Disque originels</translation>
     </message>
   </context>
   <context>
@@ -3743,6 +3747,18 @@ S&apos;il n&apos;en existe pas alors Strawberry utilisera la plus grande image d
     <message>
       <source>Collection rescan notice</source>
       <translation>Avertissement de réanalyse de la bibliothèque</translation>
+    </message>
+    <message>
+      <source>Single track as random element</source>
+      <translation>Mélange aléatoire par piste</translation>
+    </message>
+    <message>
+      <source>Album as random element</source>
+      <translation>Mélange aléatoire par album</translation>
+    </message>
+    <message>
+      <source>Grouped tracks as random element</source>
+      <translation>Mélange aléatoire par groupement de piste</translation>
     </message>
   </context>
   <context>
@@ -4646,6 +4662,10 @@ S&apos;il n&apos;en existe pas alors Strawberry utilisera la plus grande image d
       <source>No matches found.  Clear the search box to show the whole playlist again.</source>
       <translation>Aucune correspondance trouvée. Videz le champ de recherche pour afficher à nouveau la totalité de la liste de lecture.</translation>
     </message>
+    <message>
+      <source>Show the zapping values</source>
+      <translation>Affiche les valeurs de zapping.</translation>
+    </message>
   </context>
   <context>
     <name>PlaylistDelegateBase</name>
@@ -5000,6 +5020,18 @@ S&apos;il n&apos;en existe pas alors Strawberry utilisera la plus grande image d
     <message>
       <source>Write metadata when saving playlists</source>
       <translation>Écrire des métadonnées lors de la sauvegarde des listes de lecture</translation>
+    </message>
+    <message>
+      <source>Remove duplicates when adding tracks to the playlist</source>
+      <translation>Élimine les doublons lors de l&apos;ajout de pistes à la liste de lecture</translation>
+    </message>
+    <message>
+      <source>Grouping Play</source>
+      <translation>Lecture des pistes groupées</translation>
+    </message>
+    <message>
+      <source>Number of grouped tracks played before play queued track</source>
+      <translation>Nombre de pistes groupées jouées avant de jouer les pistes en attente</translation>
     </message>
   </context>
   <context>
@@ -5545,6 +5577,34 @@ Are you sure you want to continue?</source>
       <source>Can&apos;t add directory %1 with special filesystem %2 to collection</source>
       <translation>Impossible d&apos;ajouter un répertoire %1 avec le système de fichiers spécial %2 à la bibliothèque</translation>
     </message>
+    <message>
+      <source>The time played before and after the position time selected in seconds (0 for playing the complete track)</source>
+      <translation>Défini le temps de jeu avant et après la position de temps choisi en secondes (0 pour jouer la piste complète)</translation>
+    </message>
+    <message>
+      <source>The position time reference selected in percent of the track length</source>
+      <translation>Position du temps de référence en pourcentage de la durée de la piste</translation>
+    </message>
+    <message>
+      <source>This field is used to tell how many tracks of the same group will be played before the queued track will be played.</source>
+      <translation>Cet attribut est utilisé pour définir le nombre de pistes groupées qui seront jouées avant que les pistes en attentes soient jouées.</translation>
+    </message>
+    <message>
+      <source> is used to say that the queued track will wait for the end of the current track group before being played.</source>
+      <translation> est utilisé pour dire que la piste en attente ne sera lue que lorsque toutes les pistes du même groupe auront été jouées.</translation>
+    </message>
+    <message>
+      <source> is used to say that the queued track will be played after the end of the current track, whatever it belongs to a group or not.</source>
+      <translation> est utilisé pour dire que la piste en attente sera jouée immédiatement à la fin de la piste courante, peut importe l'appartenance à un groupe de pistes.</translation>
+    </message>
+    <message>
+      <source>Any other value to give the number of grouped tracks played before playing the queued one(s). </source>
+      <translation>Toute autre valeur donne le nombre de pistes groupées jouées avant de débuter la lecture de piste(s) en attente.</translation>
+    </message>
+    <message>
+      <source>Obviously, if there are less grouped tracks to play than the given number, the queued tracks will be played as soon as the last grouped track is played.</source>
+      <translation>Bien sûr, s'il y a moins de pistes groupées à lire que le nombre de pistes groupées saisi, les pistes en attentes seront jouées dès que la dernière piste groupée aura été jouée.</translation>
+    </message>
   </context>
   <context>
     <name>QWidget</name>
@@ -5849,85 +5909,85 @@ Are you sure you want to continue?</source>
     <name>RadioBrowserSearchModel</name>
     <message>
       <source>Name</source>
-      <translation type="unfinished">Name</translation>
+      <translation>Nom</translation>
     </message>
     <message>
       <source>Country</source>
-      <translation type="unfinished">Country</translation>
+      <translation>Pays</translation>
     </message>
     <message>
       <source>Tags</source>
-      <translation type="unfinished">Tags</translation>
+      <translation>Tags</translation>
     </message>
     <message>
       <source>Codec</source>
-      <translation type="unfinished">Codec</translation>
+      <translation>Codec</translation>
     </message>
   </context>
   <context>
     <name>RadioBrowserSearchView</name>
     <message>
       <source>Load more...</source>
-      <translation type="unfinished">Load more...</translation>
+      <translation>En charger davantage...</translation>
     </message>
     <message>
       <source>Search for radio stations using radio-browser.info</source>
-      <translation type="unfinished">Search for radio stations using radio-browser.info</translation>
+      <translation>Recherche pour des stations radio en utilisant radio-browser.info</translation>
     </message>
     <message>
       <source>Search radio stations...</source>
-      <translation type="unfinished">Search radio stations...</translation>
+      <translation>Recherche de station radio...</translation>
     </message>
     <message>
       <source>All countries</source>
-      <translation type="unfinished">All countries</translation>
+      <translation>Tous pays</translation>
     </message>
     <message>
       <source>By votes</source>
-      <translation type="unfinished">By votes</translation>
+      <translation>Par votes</translation>
     </message>
     <message>
       <source>By clicks</source>
-      <translation type="unfinished">By clicks</translation>
+      <translation>Par clicks</translation>
     </message>
     <message>
       <source>By name</source>
-      <translation type="unfinished">By name</translation>
+      <translation>Par nom</translation>
     </message>
     <message>
       <source>By bitrate</source>
-      <translation type="unfinished">By bitrate</translation>
+      <translation>Par taux de transfert</translation>
     </message>
     <message>
       <source>Searching...</source>
-      <translation type="unfinished">Searching...</translation>
+      <translation>Chercher...</translation>
     </message>
     <message>
       <source>No stations found.</source>
-      <translation type="unfinished">No stations found.</translation>
+      <translation>Aucune station n'a été trouvée.</translation>
     </message>
     <message>
       <source>%1 stations found</source>
-      <translation type="unfinished">%1 stations found</translation>
+      <translation>%1 stations trouvées</translation>
     </message>
     <message>
       <source>Append to current playlist</source>
-      <translation type="unfinished">Append to current playlist</translation>
+      <translation>Ajouter à la liste de lecture</translation>
     </message>
   </context>
   <context>
     <name>RadioBrowserService</name>
     <message>
       <source>No Radio Browser server available.</source>
-      <translation type="unfinished">No Radio Browser server available.</translation>
+      <translation>Aucun serveur de recherche de radio n&apos;est disponible.</translation>
     </message>
     <message>
       <source>Searching Radio Browser</source>
-      <translation type="unfinished">Searching Radio Browser</translation>
+      <translation>Recherche d&apos;un browser de radio</translation>
     </message>
     <message>
       <source>Radio Browser search failed: %1</source>
-      <translation type="unfinished">Radio Browser search failed: %1</translation>
+      <translation>La recherche d&apos;un browser de radio a échoué: %1</translation>
     </message>
   </context>
   <context>
@@ -5941,67 +6001,67 @@ Are you sure you want to continue?</source>
     <name>RadioSettingsPage</name>
     <message>
       <source>Radios</source>
-      <translation type="unfinished">Radios</translation>
+      <translation>Radios</translation>
     </message>
     <message>
       <source>SomaFM</source>
-      <translation type="unfinished">SomaFM</translation>
+      <translation>SomaFM</translation>
     </message>
     <message>
       <source>Stream quality:</source>
-      <translation type="unfinished">Stream quality:</translation>
+      <translation>Qualité d'échantillonage:</translation>
     </message>
     <message>
       <source>Radio Browser</source>
-      <translation type="unfinished">Radio Browser</translation>
+      <translation>Browser Radio</translation>
     </message>
     <message>
       <source>Search results limit:</source>
-      <translation type="unfinished">Search results limit:</translation>
+      <translation>Limite des résultats de recherche:</translation>
     </message>
     <message>
       <source>Hide broken stations</source>
-      <translation type="unfinished">Hide broken stations</translation>
+      <translation>Masquer les stations cassées</translation>
     </message>
     <message>
       <source>Default sort order:</source>
-      <translation type="unfinished">Default sort order:</translation>
+      <translation>Ordre de tri par défaut:</translation>
     </message>
     <message>
       <source>Default country:</source>
-      <translation type="unfinished">Default country:</translation>
+      <translation>Pays par défaut:</translation>
     </message>
     <message>
       <source>All countries</source>
-      <translation type="unfinished">All countries</translation>
+      <translation>Tous les pays</translation>
     </message>
     <message>
       <source>Highest</source>
-      <translation type="unfinished">Highest</translation>
+      <translation>Le meilleur</translation>
     </message>
     <message>
       <source>High</source>
-      <translation type="unfinished">High</translation>
+      <translation>Haut</translation>
     </message>
     <message>
       <source>Low</source>
-      <translation type="unfinished">Low</translation>
+      <translation>Bas</translation>
     </message>
     <message>
       <source>By votes</source>
-      <translation type="unfinished">By votes</translation>
+      <translation>Par votes</translation>
     </message>
     <message>
       <source>By clicks</source>
-      <translation type="unfinished">By clicks</translation>
+      <translation>Par clicks</translation>
     </message>
     <message>
       <source>By name</source>
-      <translation type="unfinished">By name</translation>
+      <translation>Par nom</translation>
     </message>
     <message>
       <source>By bitrate</source>
-      <translation type="unfinished">By bitrate</translation>
+      <translation>Par taux d'échantillonage</translation>
     </message>
   </context>
   <context>
@@ -6039,11 +6099,11 @@ Are you sure you want to continue?</source>
     </message>
     <message>
       <source>Channels</source>
-      <translation type="unfinished">Channels</translation>
+      <translation>Canaux</translation>
     </message>
     <message>
       <source>Radio Browser</source>
-      <translation type="unfinished">Radio Browser</translation>
+      <translation>Browser Radio</translation>
     </message>
   </context>
   <context>

@@ -869,6 +869,10 @@
         <source>Error while querying CDDA tracks.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>The &apos;track&apos; format is not supported by GStreamer.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CollectionBackend</name>
@@ -1043,11 +1047,11 @@
 <context>
     <name>CollectionLibrary</name>
     <message>
-        <source>Support for sort tags artist, album, album artist, title, composer and performer</source>
+        <source>Saving playcounts and ratings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Saving playcounts and ratings</source>
+        <source>Support for sort tags artist, album, album artist, title, composer and performer</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3751,6 +3755,18 @@ If there are no matches then it will use the largest image in the directory.</so
         <source>Collection rescan notice</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Single track as random element</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Album as random element</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Grouped tracks as random element</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MessageDialog</name>
@@ -4651,6 +4667,10 @@ If there are no matches then it will use the largest image in the directory.</so
         <source>No matches found.  Clear the search box to show the whole playlist again.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Show the zapping values</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PlaylistDelegateBase</name>
@@ -5004,6 +5024,18 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
         <source>Write metadata when saving playlists</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove duplicates when adding tracks to the playlist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Grouping Play</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Number of grouped tracks played before play queued track</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5547,6 +5579,34 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>Can&apos;t add directory %1 with special filesystem %2 to collection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The time played before and after the position time selected in seconds (0 for playing the complete track)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The position time reference selected in percent of the track length</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This field is used to tell how many tracks of the same group will be played before the queued track will be played.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> is used to say that the queued track will wait for the end of the current track group before being played.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> is used to say that the queued track will be played after the end of the current track, whatever it belongs to a group or not.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Any other value to give the number of grouped tracks played before playing the queued one(s). </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Obviously, if there are less grouped tracks to play than the given number, the queued tracks will be played as soon as the last grouped track is played.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
