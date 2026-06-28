@@ -121,6 +121,7 @@ constexpr qint64 kMinScrobblePointNsecs = 31LL * kNsecPerSec;
 constexpr qint64 kMaxScrobblePointNsecs = 240LL * kNsecPerSec;
 
 constexpr int kMaxPlayedIndexes = 100;
+constexpr int kMaxPlayedItems = 20;
 
 }  // namespace
 
@@ -196,6 +197,7 @@ Playlist::Playlist(const SharedPtr<TaskManager> task_manager,
 
 Playlist::~Playlist() {
   items_.clear();
+  played_items_.clear();
   ClearCollectionItems();
 }
 
@@ -969,6 +971,10 @@ void Playlist::set_current_row(const int i, const AutoScroll autoscroll, const b
     played_indexes_.append(current_item_index_);
     if (played_indexes_.count() > kMaxPlayedIndexes) {
       played_indexes_.remove(0, played_indexes_.count() - kMaxPlayedIndexes);
+    }
+    played_items_.append(items_[current_item_index_.row()]);
+    if (played_items_.count() > kMaxPlayedItems) {
+      played_items_.remove(0, played_items_.count() - kMaxPlayedItems);
     }
     ScheduleSave();
   }
