@@ -838,7 +838,7 @@
     </message>
     <message>
       <source>Device warm-up</source>
-      <translation>Préchauffage du périphérique</translation>
+      <translation>Préparation du périphérique</translation>
     </message>
     <message>
       <source>Delay between opening the audio device and starting playback, to avoid the start of the track being cut off while the device (DAC) is still becoming ready.  Set to 0 to disable.</source>
@@ -3935,15 +3935,27 @@ S&apos;il n&apos;en existe pas alors Strawberry utilisera la plus grande image d
     </message>
     <message>
       <source>Go to last playlist tab</source>
-      <translation type="unfinished">Go to last playlist tab</translation>
+      <translation type="unfinished">Va au dernier tab de liste de lecture</translation>
     </message>
     <message>
       <source>Go to active playlist tab</source>
-      <translation type="unfinished">Go to active playlist tab</translation>
+      <translation type="unfinished">Va au tab de liste de lecture active</translation>
     </message>
     <message>
       <source>Close current playlist tab</source>
-      <translation type="unfinished">Close current playlist tab</translation>
+      <translation type="unfinished">Ferme le tab de liste de lecture courant</translation>
+    </message>
+    <message>
+      <source>Single track as random element</source>
+      <translation>Mélange aléatoire par piste</translation>
+    </message>
+    <message>
+      <source>Album as random element</source>
+      <translation>Mélange aléatoire par album</translation>
+    </message>
+    <message>
+      <source>Grouped tracks as random element</source>
+      <translation>Mélange aléatoire par groupement de piste</translation>
     </message>
     <message>
       <source>Ctrl+B</source>
@@ -4458,7 +4470,7 @@ S&apos;il n&apos;en existe pas alors Strawberry utilisera la plus grande image d
     </message>
     <message>
       <source>Scan tracks</source>
-      <translation type="unfinished">Scan tracks</translation>
+      <translation>Lecture d'extraits de chaque piste</translation>
     </message>
   </context>
   <context>
@@ -5167,7 +5179,7 @@ S&apos;il n&apos;en existe pas alors Strawberry utilisera la plus grande image d
     </message>
     <message>
       <source>Scan tracks</source>
-      <translation type="unfinished">Scan tracks</translation>
+      <translation>Extraits de pistes</translation>
     </message>
   </context>
   <context>
@@ -5262,23 +5274,35 @@ S&apos;il n&apos;en existe pas alors Strawberry utilisera la plus grande image d
     </message>
     <message>
       <source>Scan mode</source>
-      <translation type="unfinished">Scan mode</translation>
+      <translation>Paramétrage des extraits de piste</translation>
     </message>
     <message>
       <source>Playing time (seconds)</source>
-      <translation type="unfinished">Playing time (seconds)</translation>
+      <translation>Temps de jeu de chaque extrait (secondes)</translation>
     </message>
     <message>
       <source>The time played before and after the position time selected in seconds (0 for playing the complete track)</source>
-      <translation type="unfinished">The time played before and after the position time selected in seconds (0 for playing the complete track)</translation>
+      <translation>Défini le temps de jeu avant et après la position de temps choisi en secondes (0 pour jouer la piste complète)</translation>
     </message>
     <message>
       <source>Interest position (percent of track length)</source>
-      <translation type="unfinished">Interest position (percent of track length)</translation>
+      <translation>Position du temps de référence (pourcentage de la durée de la piste)</translation>
     </message>
     <message>
       <source>The position time reference selected in percent of the track length</source>
-      <translation type="unfinished">The position time reference selected in percent of the track length</translation>
+      <translation>Position du temps de référence en pourcentage de la durée de la piste</translation>
+    </message>
+    <message>
+      <source>Remove duplicates when adding tracks to the playlist</source>
+      <translation>Élimine les doublons lors de l&apos;ajout de pistes à la liste de lecture</translation>
+    </message>
+    <message>
+      <source>Grouping Play</source>
+      <translation>Lecture des pistes groupées</translation>
+    </message>
+    <message>
+      <source>Number of grouped tracks played before play queued track</source>
+      <translation>Nombre de pistes groupées jouées avant de jouer les pistes en attente</translation>
     </message>
   </context>
   <context>
@@ -5824,6 +5848,26 @@ Are you sure you want to continue?</source>
       <source>Can&apos;t add directory %1 with special filesystem %2 to collection</source>
       <translation>Impossible d&apos;ajouter un répertoire %1 avec le système de fichiers spécial %2 à la bibliothèque</translation>
     </message>
+    <message>
+      <source>This field is used to tell how many tracks of the same group will be played before the queued track will be played.</source>
+      <translation>Cet attribut est utilisé pour définir le nombre de pistes groupées qui seront jouées avant que les pistes en attentes soient jouées.</translation>
+    </message>
+    <message>
+      <source> is used to say that the queued track will wait for the end of the current track group before being played.</source>
+      <translation> est utilisé pour dire que la piste en attente ne sera lue que lorsque toutes les pistes du même groupe auront été jouées.</translation>
+    </message>
+    <message>
+      <source> is used to say that the queued track will be played after the end of the current track, whatever it belongs to a group or not.</source>
+      <translation> est utilisé pour dire que la piste en attente sera jouée immédiatement à la fin de la piste courante, peut importe l'appartenance à un groupe de pistes.</translation>
+    </message>
+    <message>
+      <source>Any other value to give the number of grouped tracks played before playing the queued one(s). </source>
+      <translation>Toute autre valeur donne le nombre de pistes groupées jouées avant de débuter la lecture de piste(s) en attente.</translation>
+    </message>
+    <message>
+      <source>Obviously, if there are less grouped tracks to play than the given number, the queued tracks will be played as soon as the last grouped track is played.</source>
+      <translation>Bien sûr, s'il y a moins de pistes groupées à lire que le nombre de pistes groupées saisi, les pistes en attentes seront jouées dès que la dernière piste groupée aura été jouée.</translation>
+    </message>
   </context>
   <context>
     <name>QWidget</name>
@@ -6147,7 +6191,7 @@ Are you sure you want to continue?</source>
     <name>RadioBrowserSearchView</name>
     <message>
       <source>Load more...</source>
-      <translation>Charger plus...</translation>
+      <translation>En charger davantage...</translation>
     </message>
     <message>
       <source>Search for radio stations using radio-browser.info</source>
@@ -6183,7 +6227,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
       <source>No stations found.</source>
-      <translation>Aucune station trouvée.</translation>
+      <translation>Aucune station n'a été trouvée.</translation>
     </message>
     <message>
       <source>%1 stations found</source>
@@ -6248,7 +6292,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
       <source>Default country:</source>
-      <translation>Pays par Défaut :</translation>
+      <translation>Pays par défaut :</translation>
     </message>
     <message>
       <source>All countries</source>
